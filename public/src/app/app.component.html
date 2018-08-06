@@ -1,0 +1,21 @@
+<nav class="bottom_container">
+  <div class="inner_container">
+    <ul>
+      <li routerLinkActive="active" routerLink="/dashboard">
+        <span class="icon"></span>
+        <p>Dashboard</p>
+      </li>
+      <li routerLinkActive="active" routerLink="/transaction">
+        <span class="icon"></span>
+        <p>Add Transaction</p>
+      </li>
+      <li routerLinkActive="active" routerLink="/history">
+        <span class="icon"></span>
+        <p>History</p>
+      </li>
+    </ul>
+    <img routerLink="/discovery" class="logotype" src="http://placehold.it/150x40" alt="bon compte">
+  </div>
+</nav>
+
+<router-outlet (activate)="scroll_top()"></router-outlet>
