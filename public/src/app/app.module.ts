@@ -11,10 +11,14 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { HistoryComponent } from './views/history/history.component';
 import { TransactionComponent } from './views/transaction/transaction.component';
+import { LoginComponent } from './views/login/login.component';
+import { WalletComponent } from './views/wallet/wallet.component';
 
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
-  { path: '',   redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent, data: { title: 'Login' } },
+  { path: 'wallet', component: WalletComponent, data: { title: 'Wallet' } },
+  { path: 'login', component: DashboardComponent, data: { title: 'Dashboard' } },
+  { path: '',   redirectTo: 'login', pathMatch: 'full' },
   { path: 'transaction', component: TransactionComponent, data: { title: 'Transaction' } },
   { path: 'history', component: HistoryComponent, data: { title: 'History' } },
 ];
@@ -24,7 +28,9 @@ const routes: Routes = [
     AppComponent,
     DashboardComponent,
     HistoryComponent,
-    TransactionComponent
+    TransactionComponent,
+    LoginComponent,
+    WalletComponent
   ],
   imports: [
     BrowserModule,

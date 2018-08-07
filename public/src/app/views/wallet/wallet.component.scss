@@ -1,0 +1,56 @@
+// =============================================================================
+// IMPORT
+// =============================================================================
+@import "../../../assets/styles/ui_mixines";
+
+section.wallet{
+	div.inner_container{
+		div.header{
+			h1{}
+		}
+		div.body{
+			div.card_wallet{
+				div.card_header{
+					div.left{
+						h3{}
+						p{}
+					}
+					div.right{
+						a.icon{}
+					}
+				}
+				div.card_footer{
+					ul{
+						li.user_avatar{}
+					}
+					p{}
+				}
+			}
+			div.card_add{
+				h2{}
+			}
+		}
+	}
+}
+
+
+/*
+    TABLET VERSION
+*/
+@media screen and (min-width: 768px ){}
+
+/*
+    SMALL SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 992px ){}
+
+/*
+    LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1200px ){}
+
+
+/*
+    SUPER LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1600px ){}

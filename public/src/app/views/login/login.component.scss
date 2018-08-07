@@ -1,0 +1,43 @@
+// =============================================================================
+// IMPORT
+// =============================================================================
+@import "../../../assets/styles/ui_mixines";
+
+section.login{
+	div.main_container{
+		div.header{
+			h1{}
+		}
+		div.body{
+			div.input_container{
+				label{}
+				input{}
+				p.information_message{}
+			}
+		}
+		div.footer{
+			a.button{}
+		}
+	}
+}
+
+/*
+    TABLET VERSION
+*/
+@media screen and (min-width: 768px ){}
+
+/*
+    SMALL SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 992px ){}
+
+/*
+    LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1200px ){}
+
+
+/*
+    SUPER LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1600px ){}
