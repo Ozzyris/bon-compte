@@ -12,12 +12,13 @@ export class AppComponent {
 
 	constructor( private router: Router ){
 		this.router.events.subscribe( data => {
-			console.log( data );
-        	if( data.url != undefined && data.url != '/' && data.url.indexOf("login") <= 0 && data.url.indexOf("wallet") ){
-        		this.is_menu_display = true;
-        	}else{
-        		this.is_menu_display = false;
-        	}
+			console.log( );
+
+			if( data.url.indexOf("dashboard") >= 0 || data.url.indexOf("transaction") >= 0 || data.url.indexOf("history") >= 0 ){
+				this.is_menu_display = true;
+			}else{
+				this.is_menu_display = false;
+			}
       	});
 	}
 	scroll_top(){

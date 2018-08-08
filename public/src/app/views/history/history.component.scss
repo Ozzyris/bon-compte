@@ -3,6 +3,35 @@
 // =============================================================================
 @import "../../../assets/styles/ui_mixines";
 
+section.history{
+	div.inner_container{
+		div.header{
+			a.icon{}
+			h1{}
+		}
+		div.body{
+			div.last_entries{
+				div.body{
+					ul{
+						li.entry{
+							span.avatar_illustration{}
+							div.content{
+								p{
+									span{}
+								}
+								p.small{}
+							}
+							div.price{
+								p{}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 /*
     TABLET VERSION
 */

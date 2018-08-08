@@ -3,6 +3,30 @@
 // =============================================================================
 @import "../../../assets/styles/ui_mixines";
 
+section.transaction{
+	div.inner_container{
+		div.header{
+			div.icon{}
+			h1{}
+		}
+		div.body{
+			div.input_container{
+				label{}
+				input{}
+				textarea{}
+				p.information_message{}
+			}
+		}
+		div.footer{
+			a.button{
+				&.cancel{}
+				&.success{}
+			}
+		}
+	}
+}
+
+
 /*
     TABLET VERSION
 */
