@@ -5,29 +5,120 @@
 
 section.wallet{
 	div.inner_container{
+			position: relative;
+			padding-top: 5vh;
+			height: 95vh;
+			@include container_sizing( 400px );
+
 		div.header{
-			h1{}
+			margin-bottom: 32px;
+
+			h1{
+				color: #020433;
+				line-height: 32px;
+			}
 		}
 		div.body{
 			div.card_wallet{
+				width: calc(100% - 48px);
+				border-radius: 4px;
+				padding: 19px 24px 24px 24px;
+				background-size: cover;
+				background-position: center center;
+				position: relative;
+				cursor: pointer;
+
+				span.gradient{
+					background: linear-gradient(rgba(15, 115, 238, .5), rgba(198, 68, 252, .5));
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					right: 0;
+					left: 0;
+					border-radius: 4px;
+
+				}
 				div.card_header{
+					overflow: auto;
+					padding: 5px 0;
+					min-height: 100px;
+					position: relative;
+
 					div.left{
-						h3{}
-						p{}
+						float: left;
+
+						h3{
+							color: white;
+							font-size: 24px;
+
+						}
+						p{
+							font-family: 'nixie_one';
+							font-size: 14px;
+							color: white;
+							margin-top: 5px;
+						}
 					}
 					div.right{
-						a.icon{}
+						float: right;
+
+						a.icon{
+							font-family: 'font_awesome';
+							color: white;
+							font-size: 32px;
+						}
 					}
 				}
 				div.card_footer{
+					margin-bottom: 20px;
+					position: relative;
+
 					ul{
-						li.user_avatar{}
+						float: left;
+						overflow: auto;
+
+						li.user_avatar{
+							width: 20px;
+							height: 20px;
+							background-size: cover;
+							background-position: center center;
+							background-color: blue;
+							border-radius: 50%;
+							float: left;
+							margin-left: -5px;
+							border: 1.5px solid #f2f2f2;
+
+							&:first-child{
+								margin-left: 0;
+							}
+						}
 					}
-					p{}
+					p{
+						float: left;
+						color: white;
+						font-family: 'nixie_one';
+						font-size: 16px;
+						margin-left: 5px;
+						line-height: 20px;
+					}
 				}
 			}
 			div.card_add{
-				h2{}
+				margin-top: 24px;
+				height: 173px;
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				border-image: linear-gradient(to bottom left, #0F73EE, #C644FC);
+				border-image-slice: 1;
+				border-image-width: 4px;
+				cursor: pointer;
+			
+				h2{
+					background: linear-gradient(to bottom left, #0F73EE, #C644FC);
+					-webkit-background-clip: text;
+					-webkit-text-fill-color: transparent;
+				}
 			}
 		}
 	}
@@ -37,7 +128,37 @@ section.wallet{
 /*
     TABLET VERSION
 */
-@media screen and (min-width: 768px ){}
+@media screen and (min-width: 768px ){
+	section.wallet{
+		div.inner_container{
+			div.header{
+				h1{}
+			}
+			div.body{
+				div.card_wallet{
+					div.card_header{
+						div.left{
+							h3{}
+							p{}
+						}
+						div.right{
+							a.icon{}
+						}
+					}
+					div.card_footer{
+						ul{
+							li.user_avatar{}
+						}
+						p{}
+					}
+				}
+				div.card_add{
+					h2{}
+				}
+			}
+		}
+	}
+}
 
 /*
     SMALL SCREEN COMPUTER VERSION

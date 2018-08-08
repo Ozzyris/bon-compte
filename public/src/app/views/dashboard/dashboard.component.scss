@@ -3,6 +3,62 @@
 // =============================================================================
 @import "../../../assets/styles/ui_mixines";
 
+section.dashboard{
+	div.inner_container{
+		div.header{
+			a.icon{}
+			h1{}
+		}
+		div.body{
+			div.personnal_card{
+				div.card_header{
+					span.avatar_illustration{}
+					div.naming{
+						h4{}
+						p{}
+					}
+				}
+				div.card_body{
+					h2{}
+				}
+			}
+			div.partner_card_container{
+				div.partner_card{
+					div.card_header{
+						span.avatar_illustration{}
+						div.naming{
+							h4{}
+							p{}
+						}
+					}
+					div.card_body{
+						h2{}
+					}
+				}
+				div.add_card{
+					h2{}
+				}
+			}
+			div.last_entries{
+				ul{
+					li.entry{
+						span.avatar_illustration{}
+						div.content{
+							p{
+								span{}
+							}
+							p.small{}
+						}
+						div.price{
+							p{}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 /*
     TABLET VERSION
 */

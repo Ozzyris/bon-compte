@@ -5,18 +5,60 @@
 
 section.login{
 	div.main_container{
+		position: relative;
+		padding-top: 5vh;
+		height: 95vh;
+		@include container_sizing( 400px );
+
 		div.header{
-			h1{}
+			margin-bottom: 32px;
+
+			h1{
+				color: #020433;
+				line-height: 32px;
+			}
 		}
 		div.body{
 			div.input_container{
-				label{}
-				input{}
-				p.information_message{}
+				margin-bottom: 20px;
+
+				label{
+					color: #020433;
+					font-size: 12px;
+				}
+				input{
+					margin-top: 4px;
+					font-family: 'nixie_one';
+					width: calc( 100% - 26px);
+					border: 1px solid #F2F2F2;
+					border-radius: 4px;
+					padding: 12px;
+					font-size: 14px;
+					color: #020433;
+
+				}
+				p.information_message{
+					span.icon{
+						font-family: 'font_awesome';
+					}
+				}
 			}
 		}
 		div.footer{
-			a.button{}
+			position: absolute;
+			bottom: 20px;
+			width: 100%;
+
+			a.button{
+				background: linear-gradient(to bottom left, #0F73EE, #C644FC);
+				color: white;
+				display: block;
+				width: 100%;
+				padding: 16px 0;
+				border-radius: 4px;
+				text-align: center;
+				font-size: 16px;
+			}
 		}
 	}
 }
@@ -24,7 +66,35 @@ section.login{
 /*
     TABLET VERSION
 */
-@media screen and (min-width: 768px ){}
+@media screen and (min-width: 768px ){
+	section.login{
+		padding: 0;
+		display: flex;
+		height: 100vh;
+		justify-content: space-between;
+		align-items: center;
+
+		div.main_container{
+			height: 400px;
+	
+			div.header{
+				h1{}
+			}
+			div.body{
+				div.input_container{
+					label{}
+					input{}
+					p.information_message{
+						span.icon{}
+					}
+				}
+			}
+			div.footer{
+				a.button{}
+			}
+		}
+	}
+}
 
 /*
     SMALL SCREEN COMPUTER VERSION

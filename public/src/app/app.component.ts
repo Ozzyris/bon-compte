@@ -7,13 +7,11 @@ import { Router } from '@angular/router';
 	styleUrls: ['./app.component.scss']
 })
 
-
-
 export class AppComponent {
 	is_menu_display: Boolean = false;
 
 	constructor( private router: Router ){
-		this.router.events.subscribe<any>( data => {
+		this.router.events.subscribe( data => {
 			console.log( data );
         	if( data.url != undefined && data.url != '/' && data.url.indexOf("login") <= 0 && data.url.indexOf("wallet") ){
         		this.is_menu_display = true;

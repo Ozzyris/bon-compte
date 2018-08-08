@@ -17,7 +17,7 @@ import { WalletComponent } from './views/wallet/wallet.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Login' } },
   { path: 'wallet', component: WalletComponent, data: { title: 'Wallet' } },
-  { path: 'login', component: DashboardComponent, data: { title: 'Dashboard' } },
+  { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
   { path: '',   redirectTo: 'login', pathMatch: 'full' },
   { path: 'transaction', component: TransactionComponent, data: { title: 'Transaction' } },
   { path: 'history', component: HistoryComponent, data: { title: 'History' } },
