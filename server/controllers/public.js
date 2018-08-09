@@ -6,6 +6,8 @@ const express = require('express'),
 // HELPERS
 
 // MIDDLEWARE
+var check_auth = require('../middlewares/auth').check_auth;
+router.use( check_auth );
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
