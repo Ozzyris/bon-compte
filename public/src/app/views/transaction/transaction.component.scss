@@ -5,22 +5,88 @@
 
 section.transaction{
 	div.inner_container{
+		position: relative;
+		padding-top: 5vh;
+		height: 95vh;
+		@include container_sizing( 400px );
+
 		div.header{
-			div.icon{}
-			h1{}
+			margin-bottom: 32px;
+
+			a.icon{
+				font-family: 'font_awesome';
+				color: #020433;
+				display: inline;
+				line-height: 32px;
+				margin-right: 10px;
+				font-size: 24px; 
+			}
+			h1{
+				display: inline;
+				color: #020433;
+				line-height: 32px;
+			}
 		}
 		div.body{
 			div.input_container{
-				label{}
-				input{}
-				textarea{}
-				p.information_message{}
+				margin-bottom: 20px;
+
+				label{
+					color: #020433;
+					font-size: 12px;
+				}
+				input{
+					margin-top: 4px;
+					font-family: 'nixie_one';
+					width: calc( 100% - 26px);
+					border: 1px solid #F2F2F2;
+					border-radius: 4px;
+					padding: 12px;
+					font-size: 14px;
+					color: #020433;
+				}
+				textarea{
+					margin-top: 4px;
+					font-family: 'nixie_one';
+					width: calc( 100% - 26px);
+					border: 1px solid #F2F2F2;
+					border-radius: 4px;
+					padding: 12px;
+					font-size: 14px;
+					color: #020433;
+					resize: none;
+				}
+				p.information_message{
+					span.icon{
+						font-family: 'font_awesome';
+					}
+				}
 			}
 		}
 		div.footer{
+			overflow: auto;
+
 			a.button{
-				&.cancel{}
-				&.success{}
+				display: block;
+				float: left;
+				padding: 16px 0;
+				border-radius: 4px;
+				text-align: center;
+				font-size: 16px;
+				cursor: pointer;
+
+				&.cancel{
+					width: calc(40% - 6px);
+					background-color: #f2f2f2;
+					color: #020433;
+				}
+				&.success{
+					float: left;
+					background: linear-gradient(to bottom left, #0F73EE, #C644FC);
+					color: white;
+					width: calc(60% - 6px);
+					margin-left: 12px;
+				}
 			}
 		}
 	}

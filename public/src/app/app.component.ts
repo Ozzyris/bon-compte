@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, Event, NavigationEnd } from '@angular/router';
 
 @Component({
 	selector: 'app-root',
@@ -11,13 +11,13 @@ export class AppComponent {
 	is_menu_display: Boolean = false;
 
 	constructor( private router: Router ){
-		this.router.events.subscribe( data => {
-			console.log( );
-
-			if( data.url.indexOf("dashboard") >= 0 || data.url.indexOf("transaction") >= 0 || data.url.indexOf("history") >= 0 ){
+		this.router.events.subscribe((event: Event) => {
+			if(event instanceof NavigationEnd ){
+				if( event.url.indexOf("dashboard") >= 0 || event.url.indexOf("transaction") >= 0 || event.url.indexOf("history") >= 0 ){
 				this.is_menu_display = true;
-			}else{
-				this.is_menu_display = false;
+				}else{
+					this.is_menu_display = false;
+				}
 			}
       	});
 	}
