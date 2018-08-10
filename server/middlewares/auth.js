@@ -14,7 +14,7 @@ function check_auth(req, res, next) {
 		return;
 	}
 
-	user.get_auth_detail_from_xtoken( xtoken )
+	user.get_auth_from_session( xtoken )
 		.then(token_details => {
 			session = token_details;
 			return token_manager.check_if_token_is_valid( token_details );

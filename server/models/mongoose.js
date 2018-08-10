@@ -1,9 +1,10 @@
-var mongoose = require('mongoose')
-	mongoose.Promise = require('bluebird'),
-	config = require('../config');
+var mongoose = require('mongoose'),
+	config = require('../config'),
+	mongoDB = config.database;
 
-var url = config.database,
-	db = mongoose.createConnection(url);
+	mongoose.connect(mongoDB, { useNewUrlParser: true });
+	mongoose.Promise = global.Promise;
+	var db = mongoose.connection;
 
 	db.on('error', console.error.bind(console, 'Mongoose error:'));
 	db.on('connecting', function () {console.log('Mongoose connecting')});

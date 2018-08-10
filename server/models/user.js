@@ -10,6 +10,7 @@ var user = new mongoose.Schema({
     amount: {type: String, default: 0},
     password: {type: String},
     last_edit: {type: Date, default: moment()},
+    wallet: [],
     auth_record: {
         creation_date: {type: String},
         last_modification_date: {type: String},
@@ -20,7 +21,7 @@ var user = new mongoose.Schema({
 }, {collection: 'user'});
 
     //COMMON
-    user.statics.check_email = function(email){
+    user.statics.check_email = function( email ){
         return new Promise((resolve, reject) => {
             this.findOne({ email : email }).exec()
                 .then( user => {
@@ -44,7 +45,7 @@ var user = new mongoose.Schema({
                 })
         });
     }
-    user.statics.get_id_from_email = function(email){
+    user.statics.get_id_from_email = function( email ){
         return new Promise((resolve, reject) => {
             this.findOne({ email : email }).exec()
                 .then( user => {
@@ -56,6 +57,33 @@ var user = new mongoose.Schema({
                 })
         })
     };
+    user.statics.get_id_from_session = function( session ){
+        return new Promise((resolve, reject) => {
+            this.findOne({ 'auth_record.token' : session }).exec()
+                .then( user => {
+                    if( user ){
+                        resolve( user._id );
+                    }else{
+                        reject({ message: 'Your email does not exist', code: 'email_not_exist'});
+                    }
+                })
+        })
+    };
+    user.statics.get_userdetail_from_id = function( id ){
+        return new Promise((resolve, reject) => {
+            this.findOne({ _id : id }).exec()
+                .then( user => {
+                    if( user ){
+                        resolve( user )
+                    }else{
+                        reject({ message: 'Your id does not exist', code: 'id_not_exist'});
+                    }
+                })
+        });
+    }
+
+
+    //SESSION
     user.statics.save_session_from_id = function (session, user_id){
         return new Promise((resolve, reject) => {
             user.update({ _id: user_id }, {
@@ -72,11 +100,9 @@ var user = new mongoose.Schema({
             })
         });
     }
-
-    //MIDDLEWARE
-    user.statics.get_auth_detail_from_xtoken = function( xtoken ){
+    user.statics.get_auth_from_session = function( session ){
         return new Promise((resolve, reject) => {
-            this.findOne({ 'auth_record.token': xtoken }).exec()
+            this.findOne({ 'auth_record.token': session }).exec()
                 .then( user => {
                     if( user ){
                         let cleaned_token = {
@@ -101,6 +127,21 @@ var user = new mongoose.Schema({
             }).exec()
             .then(session =>{
                 resolve(true);
+            })
+        });
+    }
+
+
+    //WALLET
+    user.statics.link_wallet_from_id = function( wallet_id, user_id ){
+        return new Promise((resolve, reject) => {
+            user.update({ _id: user_id }, {
+                $push:{
+                    'wallet': wallet_id
+                }
+            }).exec()
+            .then (wallet => {
+                resolve( true );
             })
         });
     }
