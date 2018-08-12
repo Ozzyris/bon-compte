@@ -56,9 +56,15 @@ section.transaction{
 					color: #020433;
 					resize: none;
 				}
-				p.information_message{
-					span.icon{
+				p.informational_message{
+					font-size: 12px;
+					font-weight: 200;
+					color: $classic_red;
+					margin-top: 5px;
+
+					&::ng-deep span{
 						font-family: 'font_awesome';
+						font-weight: 300;
 					}
 				}
 			}

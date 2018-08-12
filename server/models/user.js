@@ -7,7 +7,6 @@ var user = new mongoose.Schema({
     given_name: {type: String},
     family_name: {type: String},
     avatar: {type: String},
-    amount: {type: String, default: 0},
     password: {type: String},
     last_edit: {type: Date, default: moment()},
     wallet: [],

@@ -7,18 +7,18 @@
 		<div class="body">
 			<div class="input_container">
 				<label for="amount_input">Amount</label>
-				<input type="text" id="amount_input" placeholder="john.doe@gmail.com">
-				<p class="information_message"></p>
+				<input type="number" id="amount_input" placeholder="12.34" [(ngModel)]="transaction.amount">
+				<p class="informational_message" [innerHTML]="info_amount | sanitizer"></p>
 			</div>
 			<div class="input_container">
 				<label for="note_input">Note</label>
-				<textarea id="note_input" placeholder="#food, #banana, #worthit"></textarea>
-				<p class="information_message"></p>
+				<textarea id="note_input" placeholder="#food, #banana, #worthit" [(ngModel)]="transaction.description"></textarea>
+				<p class="informational_message" [innerHTML]="info_note | sanitizer"></p>
 			</div>
 		</div>
 		<div class="footer">
 			<a class="button cancel">Cancel</a>
-			<a class="button success">Add entry</a>
+			<a class="button success" (click)="input_verification()">{{button_text}}</a>
 		</div>
 	</div>
 </section>

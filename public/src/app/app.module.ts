@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { MomentModule } from 'angular2-moment';
 
 //EXTERNAL PACKAGE
 
@@ -13,6 +15,9 @@ import { HistoryComponent } from './views/history/history.component';
 import { TransactionComponent } from './views/transaction/transaction.component';
 import { LoginComponent } from './views/login/login.component';
 import { WalletComponent } from './views/wallet/wallet.component';
+
+//PIPES
+import { SanitizerPipe } from './pipes/sanitizer/sanitizer.pipe';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Login' } },
@@ -30,11 +35,14 @@ const routes: Routes = [
     HistoryComponent,
     TransactionComponent,
     LoginComponent,
-    WalletComponent
+    WalletComponent,
+    SanitizerPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
+    MomentModule,
     RouterModule.forRoot(routes)
   ],
   providers: [],

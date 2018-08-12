@@ -7,34 +7,25 @@
 		<div class="body">
 			<div class="personnal_card">
 				<div class="card_header">
-					<span class="avatar_illustration" style="background-image: url(https://api.adorable.io/avatars/20/abott@adorable.png)"></span>
+					<span class="avatar_illustration" [style.backgroundImage]="'url(' + api_url + dashboard_details.my_details.avatar + ')'"></span>
 					<div class="naming">
-						<h4>Jean-Marie Baran</h4>
+						<h4>{{dashboard_details.my_details.given_name}} {{dashboard_details.my_details.family_name}}</h4>
 						<p>last updates Today at 12:04</p>
 					</div>
 				</div>
 				<div class="card_body">
-					<h2>+10,000.00</h2>
+					<h2>{{dashboard_details.my_details.balance}}</h2>
 				</div>
 			</div>
 			<div class="partner_card_container">
 				<div class="partner_card_inner_container">
-					<div class="partner_card">
+					<div class="partner_card" *ngFor="let partner of dashboard_details.partner_details" >
 						<div class="card_header">
-							<h4>Jean-Marie B.</h4>
-							<p>last updates Today at 12:04</p>
+							<h4>{{partner.given_name}} {{partner.family_name}}</h4>
+							<p>last active Today at 12:04</p>
 						</div>
 						<div class="card_body">
-							<h2>+10,000.00</h2>
-						</div>
-					</div>
-					<div class="partner_card">
-						<div class="card_header">
-							<h4>Jean-Marie B.</h4>
-							<p>last updates Today at 12:04</p>
-						</div>
-						<div class="card_body">
-							<h2>+10,000.00</h2>
+							<h2>{{partner.balance}}</h2>
 						</div>
 					</div>
 					<div class="add_card">
@@ -48,54 +39,14 @@
 				</div>
 				<div class="body">
 					<ul>
-						<li class="entry">
-							<span class="avatar_illustration" style="background-image: url(https://api.adorable.io/avatars/20/abott@adorable.png)"></span>
+						<li class="entry" *ngFor="let transaction of last_5_transactions | async">
+							<span class="avatar_illustration" [style.backgroundImage]="'url(' + api_url + transaction.author.avatar + ')'"></span>
 							<div class="content">
-								<p><span>#food</span><span>#banana</span><span>#worthit</span></p>
-								<p class="small">Yesterdai at 12:09</p>
+								<p>{{transaction.description}}</p>
+								<p class="small">{{transaction.creation_date | amTimeAgo}}</p>
 							</div>
 							<div class="price">
-								<p>$15,432.88</p>
-							</div>
-						</li>
-						<li class="entry">
-							<span class="avatar_illustration" style="background-image: url(https://api.adorable.io/avatars/20/abott@adorable.png)"></span>
-							<div class="content">
-								<p><span>#food</span><span>#banana</span><span>#worthit</span></p>
-								<p class="small">Yesterdai at 12:09</p>
-							</div>
-							<div class="price">
-								<p>$15,432.88</p>
-							</div>
-						</li>
-						<li class="entry">
-							<span class="avatar_illustration" style="background-image: url(https://api.adorable.io/avatars/20/abott@adorable.png)"></span>
-							<div class="content">
-								<p><span>#food</span><span>#banana</span><span>#worthit</span></p>
-								<p class="small">Yesterdai at 12:09</p>
-							</div>
-							<div class="price">
-								<p>$15,432.88</p>
-							</div>
-						</li>
-						<li class="entry">
-							<span class="avatar_illustration" style="background-image: url(https://api.adorable.io/avatars/20/abott@adorable.png)"></span>
-							<div class="content">
-								<p><span>#food</span><span>#banana</span><span>#worthit</span></p>
-								<p class="small">Yesterdai at 12:09</p>
-							</div>
-							<div class="price">
-								<p>$15,432.88</p>
-							</div>
-						</li>
-						<li class="entry">
-							<span class="avatar_illustration" style="background-image: url(https://api.adorable.io/avatars/20/abott@adorable.png)"></span>
-							<div class="content">
-								<p><span>#food</span><span>#banana</span><span>#worthit</span></p>
-								<p class="small">Yesterdai at 12:09</p>
-							</div>
-							<div class="price">
-								<p>$15,432.88</p>
+								<p>{{transaction.amount}}</p>
 							</div>
 						</li>
 					</ul>

@@ -15,13 +15,13 @@ router.use(bodyParser.json());
 	// WALLET
 	router.put('/add-wallet', function (req, res) {
 		let wallet = {
-				name: req.body.name
+				name: req.body.name,
+				background_image: req.body.background_image
 			},
 			user = {};
 
 		new wallet_model(wallet).save()
 			.then( wallet_detail => {
-				console.log( wallet_detail._id );
 				wallet.id = wallet_detail._id;
 				return user_model.get_id_from_session( req.headers['x-auth-token'] );
 			})
@@ -53,12 +53,12 @@ router.use(bodyParser.json());
 				return user_model.get_userdetail_from_id( user_id );
 			})
 			.then( user_detail => {
-				console.log( user_detail.wallet[0] );
 				return wallet_model.get_walletdetail_from_id( user_detail.wallet[0] );
 			})
 			.then( wallet_detail => {
-				console.log( wallet_detail );
-				res.status(200).json(wallet_detail);
+				let array_of_wallet = [];
+				array_of_wallet.push(wallet_detail);
+				res.status(200).json(array_of_wallet);
 			})
 			.catch( error => {
 				res.status(401).json( error );
@@ -72,11 +72,14 @@ router.use(bodyParser.json());
 
 		user_model.get_userdetail_from_id( user.id )
 			.then( user_detail => {
-				user.family_name = user_detail.family_name;
-				user.given_name = user_detail.given_name;
-				user.avatar = user_detail.avatar;
-
-				return wallet_model.add_member_to_wallet( user, req.body.wallet_id );
+				if(  user_detail.wallet.indexOf( req.body.wallet_id ) > -1){
+					throw { message: 'You already subscibe to this wallet', code: 'wallet_duplicate'};
+				}else{
+					user.family_name = user_detail.family_name;
+					user.given_name = user_detail.given_name;
+					user.avatar = user_detail.avatar;
+					return wallet_model.add_member_to_wallet( user, req.body.wallet_id );
+				}
 			})
 			.then( is_member_added => {
 				return user_model.link_wallet_from_id( req.body.wallet_id, user.id);
@@ -88,8 +91,7 @@ router.use(bodyParser.json());
 				res.status(401).json( error );
 			})
 	});
-
-	router.post('/get-user-values', function (req, res) {
+	router.post('/get-user-values', function (req, res) {	
 		var filtered_members = {
 			user_details:{},
 			partner_details: []
@@ -103,9 +105,7 @@ router.use(bodyParser.json());
 			})
 			.then( wallet_detail => {
 				for(var i = 0; i <= wallet_detail.member.length - 1; i++){
-					
 					if( wallet_detail.member[i].user_id ==  user_id){
-						console.log( 'alex' );
 						filtered_members.user_details = wallet_detail.member[i];
 					}else{
 						filtered_members.partner_details.push( wallet_detail.member[i] )
@@ -118,6 +118,91 @@ router.use(bodyParser.json());
 				res.status(401).json( error );
 			})
 	});
+
+	router.post('/get-last-5-transactions', function (req, res) {
+		wallet_model.get_all_transaction_from_id( req.body.wallet_id )
+			.then( all_transactions => {
+				let filtered_transaction = all_transactions;
+				filtered_transaction.sort(function(a, b) {
+					a = new Date(a.creation_date);
+					b = new Date(b.creation_date);
+					return a>b ? -1 : a<b ? 1 : 0;
+				});
+				filtered_transaction = filtered_transaction.slice(0, 5);
+
+
+				console.log(filtered_transaction);
+				res.status(200).json( filtered_transaction );
+			})
+			.catch( error => {
+				res.status(401).json( error );
+			})
+	})
+
+	router.post('/get-all-transactions', function (req, res) {
+		wallet_model.get_all_transaction_from_id( req.body.wallet_id )
+			.then( all_transactions => {
+				let filtered_transaction = all_transactions;
+				filtered_transaction.sort(function(a, b) {
+					a = new Date(a.creation_date);
+					b = new Date(b.creation_date);
+					return a>b ? -1 : a<b ? 1 : 0;
+				});
+
+				res.status(200).json( all_transactions );
+			})
+			.catch( error => {
+				res.status(401).json( error );
+			})	
+	})
+	
+	router.post('/add-transaction', function (req, res) {
+		let transaction = {
+			amount: req.body.amount,
+			description: req.body.description,
+			author: {}
+		},
+		user_id;
+		user_model.get_id_from_session( req.headers['x-auth-token'] )
+			.then( id => {
+				user_id = id;
+				return wallet_model.get_walletdetail_from_id( req.body.wallet_id );
+			})
+			.then( wallet_detail => {
+				for(var i = 0; i <= wallet_detail.member.length - 1; i++){
+					if( wallet_detail.member[i].user_id ==  user_id){
+						let spending = wallet_detail.member[i].spending,
+							balance = wallet_detail.member[i].balance;
+						spending = parseInt(spending) + parseInt(transaction.amount);
+						balance = parseInt(balance) + (parseInt(transaction.amount) - (parseInt(transaction.amount) / wallet_detail.member.length));
+						spending = Math.round(spending);
+						balance = Math.round(balance);
+						wallet_model.update_member_amount_on_wallet( user_id, spending, balance );
+					}else{
+						let balance = wallet_detail.member[i].balance;
+						balance = parseInt(balance) - (parseInt(transaction.amount) / wallet_detail.member.length);
+						balance = Math.round(balance);
+						wallet_model.update_other_member_amount_on_wallet( wallet_detail.member[i].user_id, balance );
+					}
+				}
+
+				return user_model.get_userdetail_from_id( user_id );
+			})
+			.then( user_detail => {
+				transaction.author.user_id = user_detail._id;
+				transaction.author.family_name = user_detail.family_name;
+				transaction.author.given_name = user_detail.given_name;
+				transaction.author.avatar = user_detail.avatar;
+
+				return wallet_model.add_transaction_to_wallet( transaction, req.body.wallet_id );
+			})
+			.then( is_amount_updated => {
+				res.status(200).json({message: 'New transaction added 💰'});
+			})
+			.catch( error => {
+				res.status(401).json( error );
+			})		
+	})
 
 module.exports = {
 	"public" : router

@@ -19,6 +19,7 @@ router.use(bodyParser.json());
 			given_name: req.body.given_name,
 			family_name: req.body.family_name,
 			password: req.body.password,
+			avatar: req.body.avatar
 		};
 
 		if( req.body.code == 'KDP3-YQE8-FW6D-LG2H'){
