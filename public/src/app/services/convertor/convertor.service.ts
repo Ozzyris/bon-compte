@@ -30,8 +30,12 @@ export class convertor_service {
 		}
 	}
 
-	currency_converter( amount, type ){
-		let rate = this.get_rate(type);
-		return Math.round((amount * rate) * 100) / 100;
+	convert_to_currency( amount, type ){
+		if( type != ''){
+			let rate = this.get_rate(type);
+			return Math.round((amount * rate) * 100) / 100;
+		}else{
+			return amount;
+		}
 	}
 }

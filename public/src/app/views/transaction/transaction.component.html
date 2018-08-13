@@ -8,7 +8,7 @@
 			<div class="input_container">
 				<label for="amount_input">Amount</label>
 				<span class="input_group">
-					<input type="text" id="amount_input" placeholder="12.34" [(ngModel)]="transaction.amount">
+					<input type="text" id="amount_input" placeholder="12.34" [(ngModel)]="transaction.original_amount.amount">
 					<button class="currency" (click)="is_currency_displayed = !is_currency_displayed">{{currency.choosen}}</button>
 					<span class="other_currency" *ngIf="is_currency_displayed">
 						<a *ngFor="let currency of currency.other" (click)="update_currency(currency)">{{currency}}</a>

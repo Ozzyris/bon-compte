@@ -15,7 +15,7 @@
 								<p class="small">{{transaction.creation_date | amTimeAgo}}</p>
 							</div>
 							<div class="price">
-								<p>{{transaction.amount}}</p>
+								<p>{{transaction.amount | convertor:user_currency}}</p>
 							</div>
 						</li>
 					</ul>

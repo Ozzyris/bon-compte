@@ -160,6 +160,10 @@ router.use(bodyParser.json());
 		let transaction = {
 			amount: req.body.amount,
 			description: req.body.description,
+			original_amount: {
+				amount: req.body.original_amount.amount,
+				currency: req.body.original_amount.currency
+			},
 			author: {}
 		},
 		user_id;

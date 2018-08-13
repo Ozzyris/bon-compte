@@ -14,7 +14,7 @@
 					</div>
 				</div>
 				<div class="card_body">
-					<h2>{{dashboard_details.my_details.balance}}</h2>
+					<h2>{{dashboard_details.my_details.balance | convertor:user_currency}}</h2>
 				</div>
 			</div>
 			<div class="partner_card_container">
@@ -25,7 +25,7 @@
 							<p>last edit {{partner.last_edit | amTimeAgo}}</p>
 						</div>
 						<div class="card_body">
-							<h2>{{partner.balance}}</h2>
+							<h2>{{partner.balance | convertor:user_currency}}</h2>
 						</div>
 					</div>
 					<div class="add_card">
@@ -46,7 +46,7 @@
 								<p class="small">{{transaction.creation_date | amTimeAgo}}</p>
 							</div>
 							<div class="price">
-								<p>{{transaction.amount}}</p>
+								<p>{{transaction.amount | convertor:user_currency}}</p>
 							</div>
 						</li>
 					</ul>

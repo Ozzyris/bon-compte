@@ -24,6 +24,10 @@ var wallet = new mongoose.Schema({
             creation_date: {type: Date, default: moment()},
             amount: {type: Number},
             description: {type: String},
+            original_amount: {
+                amount: {type: String},
+                currency: {type: String},
+            },
             author: {
                 user_id: {type: String},
                 family_name: {type: String},
@@ -87,6 +91,10 @@ var wallet = new mongoose.Schema({
                         creation_date: moment(),
                         amount: transaction.amount,
                         description: transaction.description,
+                        original_amount: {
+                            amount: transaction.original_amount.amount,
+                            currency: transaction.original_amount.currency,
+                        },
                         author: {
                             user_id: transaction.author.user_id,
                             family_name: transaction.author.family_name,

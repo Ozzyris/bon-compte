@@ -26,7 +26,6 @@ export class WalletComponent implements OnInit {
 	}
 
 	open_wallet( wallet_id ){
-		console.log( wallet_id );
 		localStorage.setItem("wallet_id", wallet_id);
 		this.router.navigate(['dashboard']);
 	}

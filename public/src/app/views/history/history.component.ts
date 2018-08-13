@@ -14,16 +14,42 @@ import { wallet_service } from '../../services/wallet/wallet.service';
 export class HistoryComponent implements OnInit {
 	api_url: string = environment.api_url + 'uploads/';
 	all_transactions: any;
+	user_currency: string;
 
 	constructor( private wallet_service: wallet_service ){}
 	ngOnInit(){
 		this.get_all_transactions();
+		this.get_user_currency();
 	}
 
 	get_wallet_id_from_storage(): Promise<any>{
 		return new Promise((resolve, reject)=>{
 			resolve( localStorage.getItem('wallet_id') );
 		})
+	}
+	get_currency_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			resolve( localStorage.getItem('currency') );
+		})
+	}
+	get_conversion_type( currency ){
+		switch( currency ){
+			case 'EUR':
+				return 'usdToeur';
+			case 'AUD':
+				return 'usdToaud';
+			case 'YEN':
+				return 'usdToyen';
+			default:
+				return '';
+		}
+	}
+	
+	get_user_currency(){
+		this.get_currency_from_storage()
+			.then( currency => {
+				this.user_currency = this.get_conversion_type( currency );
+			})
 	}
 
 	get_all_transactions(){

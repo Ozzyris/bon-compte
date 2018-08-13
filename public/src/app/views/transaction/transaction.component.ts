@@ -20,7 +20,11 @@ export class TransactionComponent implements OnInit {
 	//transaction information
 	transaction : any = {
 		amount: '',
-		description: ''
+		description: '',
+		original_amount: {
+			amount: '',
+			currency: ''
+		}
 	}
 	currency : any = {
 		choosen: '',
@@ -38,7 +42,7 @@ export class TransactionComponent implements OnInit {
 	constructor( private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
 	ngOnInit(){
 		// console.log( this.convertor_service.currency_converter( 100, 'eurTousd' ) );
-		this.init_currency();
+		this.get_user_currency();
 	}
 
 	get_currency_from_storage(): Promise<any>{
@@ -52,7 +56,7 @@ export class TransactionComponent implements OnInit {
 		})
 	}
 
-	init_currency(){
+	get_user_currency(){
 		this.get_currency_from_storage()
 			.then( currency => {
 				this.update_currency( currency );
@@ -61,8 +65,6 @@ export class TransactionComponent implements OnInit {
 	update_currency( currency ){
 		this.currency.choosen = currency;
 		this.currency.other = all_currency.slice(0);
-
-		console.log(this.currency, all_currency);
 
 		let index = this.currency.other.indexOf( currency );
 		if (index > -1) {
@@ -77,11 +79,12 @@ export class TransactionComponent implements OnInit {
 		let open_door = true;
 		this.info_amount = this.info_note = '';
 
-		if( this.transaction.amount == ''){
+		if( this.transaction.original_amount.amount == ''){
 			open_door = false;
 			this.info_amount = '<span class="icon""></span> The transaction amount is required';
 		}
-		if( this.validator_service.number_test( this.transaction.amount ) == false ){
+
+		if( this.validator_service.number_test( this.transaction.original_amount.amount ) == false ){
 			open_door = false;
 			this.info_amount = '<span class="icon""></span> The amound need to be a number';
 		}
@@ -97,17 +100,35 @@ export class TransactionComponent implements OnInit {
 		}
 	}
 
+	get_conversion_type(){
+		switch( this.currency.choosen ){
+			case 'EUR':
+				return 'eurTousd';
+			case 'AUD':
+				return 'audTousd';
+			case 'YEN':
+				return 'yenTousd';
+			default:
+				return '';
+		}
+	}
+
 	add_transaction(){
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				this.transaction.wallet_id = wallet_id;
-				// let conversion_type = this.conversion_manager(  )
+				this.transaction.original_amount.currency = this.currency.choosen;
+				this.transaction.amount = this.convertor_service.convert_to_currency( parseInt( this.transaction.original_amount.amount ), this.get_conversion_type() );
+
+				//cent conversion
+				this.transaction.amount = this.transaction.amount*100;
+				this.transaction.original_amount.amount = this.transaction.original_amount.amount*100;
 
 				this.wallet_service.add_entry( this.transaction )
 					.subscribe( is_transaction_added => {
-						console.log(is_transaction_added);
+							console.log(is_transaction_added);
 							alert( is_transaction_added.message )
-							this.transaction.amount = this.transaction.description = '';
+							this.transaction.original_amount.amount = this.transaction.description = '';
 						}, err => {
 							this.info_note = '<span class="icon""></span> ' + err.error.message;
 							this.button_text = 'Add entry';
