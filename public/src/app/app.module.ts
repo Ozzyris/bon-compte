@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { MomentModule } from 'angular2-moment';
 
 //EXTERNAL PACKAGE
+import { MomentModule } from 'angular2-moment';
 
 //VIEWS
 import { AppComponent } from './app.component';

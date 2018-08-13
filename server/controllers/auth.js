@@ -45,8 +45,10 @@ router.use(bodyParser.json());
 	// SIGN IN
 	router.post('/signin', function (req, res) {
 		let user = {
+			id: '',
 			email: req.body.email,
 			password: req.body.password,
+			currency: '',
 		},
 		session = {
 			token: '',
@@ -66,6 +68,7 @@ router.use(bodyParser.json());
 				}
 			})
 			.then(user_id => {
+				user.id = user_id;
 				session.token = token_manager.create_token();
 
 				if( session.keep_session == true ){
@@ -73,12 +76,15 @@ router.use(bodyParser.json());
 				}else{
 					session.expiration_date = moment().add(1,'day');
 				}
-				console.log( session, user_id );
+
 				return user_model.save_session_from_id( session, user_id );
 			})
 			.then(is_session_saved => {
-				console.log( is_session_saved );
-				res.status(200).json({ session: session.token });
+				return user_model.get_userdetail_from_id( user.id );
+			})
+			.then(user_details => {
+				user.currency = user_details.currency;
+				res.status(200).json({ session: session.token, currency: user.currency });
 			})
 			.catch( error => {
 				res.status(401).json( error );

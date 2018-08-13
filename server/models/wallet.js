@@ -14,6 +14,7 @@ var wallet = new mongoose.Schema({
             family_name: {type: String},
             given_name: {type: String},
             avatar: {type: String},
+            last_edit: {type: Date, default: moment()},
             spending: {type: Number, default: 0},
             balance: {type: Number, default: 0},
         }
@@ -56,6 +57,7 @@ var wallet = new mongoose.Schema({
                 '$set': {
                     'member.$.balance': balance,
                     'member.$.spending': spending,
+                    'member.$.last_edit': moment(),
                     'last_edit': moment()
                 }
             }).exec()
@@ -82,6 +84,7 @@ var wallet = new mongoose.Schema({
             wallet.update({ _id: id }, {
                 $push:{
                     'transaction': {
+                        creation_date: moment(),
                         amount: transaction.amount,
                         description: transaction.description,
                         author: {

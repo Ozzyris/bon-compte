@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-//interface
-import { Auth_response } from '../../interfaces/auth';
-
 //services
 import { auth_service } from '../../services/auth/auth.service';
 import { validator_service } from '../../services/validator/validator.service';
@@ -64,7 +61,9 @@ export class LoginComponent implements OnInit {
 		this.auth_service.signin( this.user_information )
 			.subscribe( user_details => {
 					if( user_details ){
+						console.log(user_details);
 						localStorage.setItem("session", user_details.session);
+						localStorage.setItem("currency", user_details.currency);
 						this.router.navigate(['wallet']);
 					}
 				}, err => {

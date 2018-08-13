@@ -10,7 +10,7 @@
 					<span class="avatar_illustration" [style.backgroundImage]="'url(' + api_url + dashboard_details.my_details.avatar + ')'"></span>
 					<div class="naming">
 						<h4>{{dashboard_details.my_details.given_name}} {{dashboard_details.my_details.family_name}}</h4>
-						<p>last updates Today at 12:04</p>
+						<p>last edit {{dashboard_details.my_details.last_edit | amTimeAgo}}</p>
 					</div>
 				</div>
 				<div class="card_body">
@@ -22,7 +22,7 @@
 					<div class="partner_card" *ngFor="let partner of dashboard_details.partner_details" >
 						<div class="card_header">
 							<h4>{{partner.given_name}} {{partner.family_name}}</h4>
-							<p>last active Today at 12:04</p>
+							<p>last edit {{partner.last_edit | amTimeAgo}}</p>
 						</div>
 						<div class="card_body">
 							<h2>{{partner.balance}}</h2>

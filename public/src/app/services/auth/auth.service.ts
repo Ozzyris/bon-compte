@@ -3,9 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
-//interface
-import { Auth_response } from '../../interfaces/auth';
-
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
@@ -22,8 +19,8 @@ export class auth_service {
 	constructor( private http: HttpClient ){}
 
 	// SIGN IN
-	signin( user_credential ){
+	signin( user_credential ): Observable<any>{
 		let url = this.base_url + 'signin';
-		return this.http.post<Auth_response>(url, user_credential, httpOptions);
+		return this.http.post(url, user_credential, httpOptions);
 	}
 }

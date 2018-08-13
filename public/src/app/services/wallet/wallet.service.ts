@@ -34,7 +34,7 @@ export class wallet_service {
 		return this.http.get(url, this.httpOptions);
 	}
 
-	get_dashboard_details( payload ){
+	get_dashboard_details( payload ): Observable<any>{
 		let url = this.base_url + 'get-user-values';
 		return this.http.post(url, payload, this.httpOptions);
 	}
@@ -49,7 +49,7 @@ export class wallet_service {
 		return this.http.post(url, payload, this.httpOptions);
 	}
 	
-	add_entry( payload ){
+	add_entry( payload ): Observable<any>{
 		let url = this.base_url + 'add-transaction';
 		return this.http.post(url, payload, this.httpOptions);
 	}

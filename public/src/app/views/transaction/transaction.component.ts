@@ -3,13 +3,17 @@ import { environment } from '../../../environments/environment';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
+import { validator_service } from '../../services/validator/validator.service';
+import { convertor_service } from '../../services/convertor/convertor.service';
 
+// constants
+const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
 
 @Component({
 	selector: 'app-transaction',
 	templateUrl: './transaction.component.html',
 	styleUrls: ['./transaction.component.scss'],
-	providers: [wallet_service]
+	providers: [wallet_service, validator_service, convertor_service]
 })
 
 export class TransactionComponent implements OnInit {
@@ -18,16 +22,54 @@ export class TransactionComponent implements OnInit {
 		amount: '',
 		description: ''
 	}
+	currency : any = {
+		choosen: '',
+		other: []
+	}
 
 	//inputs feedback
 	info_amount = '';
 	info_note = '';
+	is_currency_displayed: boolean = false;
 
 	button_text: String = 'Add entry';
 
 
-	constructor( private wallet_service: wallet_service ){}
-	ngOnInit(){}
+	constructor( private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
+	ngOnInit(){
+		// console.log( this.convertor_service.currency_converter( 100, 'eurTousd' ) );
+		this.init_currency();
+	}
+
+	get_currency_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			resolve( localStorage.getItem('currency') );
+		})
+	}
+	get_wallet_id_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			resolve( localStorage.getItem('wallet_id') );
+		})
+	}
+
+	init_currency(){
+		this.get_currency_from_storage()
+			.then( currency => {
+				this.update_currency( currency );
+			})
+	}
+	update_currency( currency ){
+		this.currency.choosen = currency;
+		this.currency.other = all_currency.slice(0);
+
+		console.log(this.currency, all_currency);
+
+		let index = this.currency.other.indexOf( currency );
+		if (index > -1) {
+			this.currency.other.splice(index, 1);
+		}
+		this.is_currency_displayed = false;
+	}
 
 	input_verification(){
 		this.button_text = 'Loading';
@@ -38,6 +80,10 @@ export class TransactionComponent implements OnInit {
 		if( this.transaction.amount == ''){
 			open_door = false;
 			this.info_amount = '<span class="icon""></span> The transaction amount is required';
+		}
+		if( this.validator_service.number_test( this.transaction.amount ) == false ){
+			open_door = false;
+			this.info_amount = '<span class="icon""></span> The amound need to be a number';
 		}
 		if( this.transaction.description == ''){
 			open_door = false;
@@ -51,16 +97,11 @@ export class TransactionComponent implements OnInit {
 		}
 	}
 
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
-
 	add_transaction(){
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				this.transaction.wallet_id = wallet_id;
+				// let conversion_type = this.conversion_manager(  )
 
 				this.wallet_service.add_entry( this.transaction )
 					.subscribe( is_transaction_added => {
