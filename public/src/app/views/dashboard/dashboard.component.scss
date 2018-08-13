@@ -180,20 +180,19 @@ section.dashboard{
 								float: left;
 								margin-left: 5px;
 
-								p{
-									width: 160px;
+								p.description{
+									width: 200px;
+									line-height: 20px;
+									height: 20px;
 									overflow: hidden;
 									text-overflow: ellipsis;
-									
-									span{
-										font-size: 14px;
-										font-family: 'nixie_one';
-										color: #020433;
-									}
+									white-space: nowrap;
+									font-size: 14px;
+									font-family: 'nixie_one';
+									color: #020433;
 								}
 								p.small{
 									font-size: 13px;
-									margin-top: 5px;
 									font-family: 'nixie_one';
 									color: rgba(#020433, .5);
 								}

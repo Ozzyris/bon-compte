@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
 	};
 	last_5_transactions: any;
 	user_currency: string;
+	money_sign: string;
 
 	constructor( private wallet_service: wallet_service ){}
 	ngOnInit(){
@@ -53,10 +54,13 @@ export class DashboardComponent implements OnInit {
 	get_conversion_type( currency ){
 		switch( currency ){
 			case 'EUR':
+				this.money_sign = '€';
 				return 'usdToeur';
 			case 'AUD':
+				this.money_sign = '$';
 				return 'usdToaud';
 			case 'YEN':
+				this.money_sign = '¥';
 				return 'usdToyen';
 			default:
 				return '';
