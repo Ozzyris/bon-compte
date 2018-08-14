@@ -6,12 +6,13 @@ import { Routes, RouterModule } from '@angular/router';
 //External packages
 import { IonicModule } from '@ionic/angular';
 
-import { WalletPage } from './wallet.page';
+//Views
+import { DashboardPage } from './dashboard.page';
 
 const routes: Routes = [
     {
         path: '',
-        component: WalletPage
+        component: DashboardPage
     }
 ];
 
@@ -23,7 +24,8 @@ const routes: Routes = [
         RouterModule.forChild(routes)
     ],
     declarations: [
-        WalletPage
+        DashboardPage,
+        
     ]
 })
-export class WalletPageModule {}
+export class DashboardPageModule {}

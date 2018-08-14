@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
 	//primary cta
 	button_text: string = 'Login';
 	// private nativeStorage: NativeStorage,
-	constructor(  public navCtrl: NavController, private validator_service: validator_service, private auth_service: auth_service ){}
+	constructor( public navCtrl: NavController, private validator_service: validator_service, private auth_service: auth_service ){}
 	ngOnInit(){}
 
 	 input_verification(){

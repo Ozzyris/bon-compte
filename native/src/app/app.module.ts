@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+// import { TimeAgoPipe } from 'angular2-moment';
+import { MomentModule } from 'angular2-moment';
 // import { NativeStorage } from '@ionic-native/native-storage';
 
 //Routes
@@ -29,6 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
 		IonicModule.forRoot(),
 		AppRoutingModule,
 		HttpClientModule,
+		MomentModule
 
 	],
 	providers: [
