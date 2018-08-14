@@ -15,6 +15,8 @@ export class HistoryComponent implements OnInit {
 	api_url: string = environment.api_url + 'uploads/';
 	all_transactions: any;
 	user_currency: string;
+	money_sign: string;
+	selected_item: string;
 
 	constructor( private wallet_service: wallet_service ){}
 	ngOnInit(){
@@ -35,10 +37,13 @@ export class HistoryComponent implements OnInit {
 	get_conversion_type( currency ){
 		switch( currency ){
 			case 'EUR':
+				this.money_sign = '€';
 				return 'usdToeur';
 			case 'AUD':
+				this.money_sign = '$';
 				return 'usdToaud';
 			case 'YEN':
+				this.money_sign = '¥';
 				return 'usdToyen';
 			default:
 				return '';
@@ -63,5 +68,13 @@ export class HistoryComponent implements OnInit {
 
 				this.all_transactions = this.wallet_service.get_all_transactions( payload );
 			})	
+	}
+
+	activate_item( index ){
+		if( index == this.selected_item ){
+			this.selected_item = 'x';
+		}else{
+			this.selected_item = index;
+		}		
 	}
 }

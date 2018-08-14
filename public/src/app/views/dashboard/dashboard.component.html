@@ -15,6 +15,7 @@
 				</div>
 				<div class="card_body">
 					<h2>{{money_sign}} {{dashboard_details.my_details.balance | convertor:user_currency}}</h2>
+					<p class="spending">spending : {{money_sign}} {{dashboard_details.my_details.spending | convertor:user_currency}}</p>
 				</div>
 			</div>
 			<div class="partner_card_container">
@@ -26,6 +27,7 @@
 						</div>
 						<div class="card_body">
 							<h2>{{money_sign}} {{partner.balance | convertor:user_currency}}</h2>
+							<p class="spending">spending : {{money_sign}} {{partner.spending | convertor:user_currency}}</p>
 						</div>
 					</div>
 					<div class="add_card">

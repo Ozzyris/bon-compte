@@ -11,6 +11,19 @@ export class ConvertorPipe implements PipeTransform {
 	constructor( private convertor_service: convertor_service ){}
 
 	transform(value: any, currency: string): any {
-		return Math.round( ( this.convertor_service.convert_to_currency( value, currency) / 100) * 100) / 100;
+		//convertion in cents
+		let converted_amount = this.convertor_service.convert_to_currency( value, currency);
+
+		//rounded the to cents
+		converted_amount = Math.round( converted_amount );
+
+		// move to real price
+		converted_amount =  Math.round( converted_amount ) / 100;
+
+		// keep the 2 digits.
+		converted_amount = parseFloat( converted_amount ).toFixed(2);
+
+
+		return converted_amount;
 	}
 }

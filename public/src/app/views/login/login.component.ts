@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
 		this.auth_service.signin( this.user_information )
 			.subscribe( user_details => {
 					if( user_details ){
-						console.log(user_details);
 						localStorage.setItem("session", user_details.session);
 						localStorage.setItem("currency", user_details.currency);
 						this.router.navigate(['wallet']);

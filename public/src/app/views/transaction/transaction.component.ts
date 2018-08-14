@@ -126,9 +126,9 @@ export class TransactionComponent implements OnInit {
 
 				this.wallet_service.add_entry( this.transaction )
 					.subscribe( is_transaction_added => {
-							console.log(is_transaction_added);
 							alert( is_transaction_added.message )
 							this.transaction.original_amount.amount = this.transaction.description = '';
+							this.button_text = 'Add entry';
 						}, err => {
 							this.info_note = '<span class="icon""></span> ' + err.error.message;
 							this.button_text = 'Add entry';
