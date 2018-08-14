@@ -38,6 +38,44 @@
 /public/.DS_Store
 /public/Thumbs.db
 
+#NATIVE
+# compiled output
+/native/dist
+/native/dist-server
+/native/tmp
+/native/out-tsc
+# dependencies
+/native/node_modules
+/native/src/environments
+# IDEs and editors
+/native/.idea
+/native/.project
+/native/.classpath
+/native/.c9/
+/native/*.launch
+/native/.settings/
+/native/*.sublime-workspace
+# IDE - VSCode
+/native/.vscode/*
+/native/!.vscode/settings.json
+/native/!.vscode/tasks.json
+/native/!.vscode/launch.json
+/native/!.vscode/extensions.json
+# misc
+/native/.sass-cache
+/native/connect.lock
+/native/coverage
+/native/libpeerconnection.log
+/native/npm-debug.log
+/native/testem.log
+/native/typings
+# e2e
+/native/e2e/*.js
+/native/e2e/*.map
+# System Files
+/native/.DS_Store
+/native/Thumbs.db
+
 
 #BACKEND
 # compiled output
