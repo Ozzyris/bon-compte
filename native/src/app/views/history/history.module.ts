@@ -7,7 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 //View
-import { WalletPage } from './wallet.page';
+import { HistoryPage } from './history.page';
 
 //Pipes
 import { PipesModule } from "../../pipes/pipe.module";
@@ -15,7 +15,7 @@ import { PipesModule } from "../../pipes/pipe.module";
 const routes: Routes = [
     {
         path: '',
-        component: WalletPage
+        component: HistoryPage
     }
 ];
 
@@ -28,8 +28,7 @@ const routes: Routes = [
         PipesModule
     ],
     declarations: [
-        WalletPage
-    ],
-    exports: []
+        HistoryPage
+    ]
 })
-export class WalletPageModule {}
+export class HistoryPageModule {}

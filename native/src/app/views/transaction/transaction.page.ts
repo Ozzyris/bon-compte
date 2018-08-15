@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../environments/environment';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -11,12 +10,11 @@ const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
 
 @Component({
 	selector: 'app-transaction',
-	templateUrl: './transaction.component.html',
-	styleUrls: ['./transaction.component.scss'],
+	templateUrl: './transaction.page.html',
+	styleUrls: ['./transaction.page.scss'],
 	providers: [wallet_service, validator_service, convertor_service]
 })
-
-export class TransactionComponent implements OnInit {
+export class TransactionPage implements OnInit {
 	//transaction information
 	transaction : any = {
 		amount: '',
@@ -37,7 +35,6 @@ export class TransactionComponent implements OnInit {
 	is_currency_displayed: boolean = false;
 
 	button_text: String = 'Add entry';
-
 
 	constructor( private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
 	ngOnInit(){
