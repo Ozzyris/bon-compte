@@ -11,8 +11,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPage } from './login.page';
 
 //Pipes
-import { SanitizerPipe } from '../../pipes/sanitizer/sanitizer.pipe';
-
+import { PipesModule } from "../../pipes/pipe.module";
 
 const routes: Routes = [
   {
@@ -27,10 +26,10 @@ const routes: Routes = [
         FormsModule,
         IonicModule,
         RouterModule.forChild(routes),
+        PipesModule
     ],
     declarations: [
-        LoginPage,
-        SanitizerPipe 
+        LoginPage
     ]
 })
 

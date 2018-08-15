@@ -5,8 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 //External packages
 import { IonicModule } from '@ionic/angular';
+import { TimeAgoPipe } from 'angular2-moment';
 
+//View
 import { WalletPage } from './wallet.page';
+
+//Pipes
+import { PipesModule } from "../../pipes/pipe.module";
 
 const routes: Routes = [
     {
@@ -20,10 +25,12 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        PipesModule
     ],
     declarations: [
         WalletPage
-    ]
+    ],
+    exports: []
 })
 export class WalletPageModule {}

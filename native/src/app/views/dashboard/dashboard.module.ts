@@ -9,6 +9,9 @@ import { IonicModule } from '@ionic/angular';
 //Views
 import { DashboardPage } from './dashboard.page';
 
+//Pipes
+import { PipesModule } from "../../pipes/pipe.module";
+
 const routes: Routes = [
     {
         path: '',
@@ -21,11 +24,12 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        PipesModule
     ],
     declarations: [
         DashboardPage,
-        
-    ]
+    ],
+    exports: []
 })
 export class DashboardPageModule {}
