@@ -1,23 +1,23 @@
+//Internal packages
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
-//External packages
+//External package
 import { IonicModule } from '@ionic/angular';
 
-//View
-import { TransactionPage } from './transaction.page';
+//Views
+import { LoginPage } from './login.page';
 
 //Pipes
 import { PipesModule } from "../../pipes/pipe.module";
 
 const routes: Routes = [
-    {
-        path: '',
-        component: TransactionPage,
-        outlet: 'transaction'
-    }
+  {
+    path: '',
+    component: LoginPage
+  }
 ];
 
 @NgModule({
@@ -29,10 +29,8 @@ const routes: Routes = [
         PipesModule
     ],
     declarations: [
-        TransactionPage
-    ],
-    exports: [
-        RouterModule
+        LoginPage
     ]
 })
-export class TransactionPageModule {}
+
+export class LoginPageModule {}

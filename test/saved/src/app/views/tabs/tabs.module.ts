@@ -20,11 +20,10 @@ import { TabsPage } from './tabs.page';
         CommonModule,
         FormsModule,
         IonicModule,
+        TabsPageRoutingModule,
         DashboardPageModule,
         TransactionPageModule,
-        HistoryPageModule,
-        TabsPageRoutingModule,
-        
+        HistoryPageModule
     ],
     declarations: [TabsPage]
 })

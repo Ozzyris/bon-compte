@@ -3,21 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
-//External packages
 import { IonicModule } from '@ionic/angular';
 
-//View
-import { TransactionPage } from './transaction.page';
-
-//Pipes
-import { PipesModule } from "../../pipes/pipe.module";
+import { TestPage } from './test.page';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: TransactionPage,
-        outlet: 'transaction'
-    }
+  {
+    path: '',
+    component: TestPage,
+    outlet: 'test'
+  }
 ];
 
 @NgModule({
@@ -25,14 +20,13 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-        RouterModule.forChild(routes),
-        PipesModule
+        RouterModule.forChild(routes)
     ],
     declarations: [
-        TransactionPage
+        TestPage
     ],
     exports: [
         RouterModule
     ]
 })
-export class TransactionPageModule {}
+export class TestPageModule {}

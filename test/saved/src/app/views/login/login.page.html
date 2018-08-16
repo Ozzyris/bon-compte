@@ -1,0 +1,22 @@
+<section class="login">
+	<div class="main_container">
+		<div class="header">
+			<h1>Hi,<br>Welcome back!</h1>
+		</div>
+		<div class="body">
+			<div class="input_container">
+				<label for="email_input">Email</label>
+				<input type="text" id="email_input" placeholder="john.doe@gmail.com" [(ngModel)]="user_information.email">
+				<p class="informational_message" [innerHTML]="info_email | sanitizer"></p>
+			</div>
+			<div class="input_container">
+				<label for="password_input">Password</label>
+				<input type="Password" id="password_input" placeholder="HsdkfH56!JH" [(ngModel)]="user_information.password">
+				<p class="informational_message" [innerHTML]="info_password | sanitizer"></p>
+			</div>
+		</div>
+		<div class="footer">
+			<a class="button" (click)="input_verification()">{{button_text}}</a>
+		</div>
+	</div>
+</section>
