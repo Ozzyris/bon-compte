@@ -15,9 +15,7 @@ import { PipesModule } from "../../pipes/pipe.module";
 const routes: Routes = [
     {
         path: '',
-        component: HistoryPage,
-        outlet: 'history'
-
+        component: HistoryPage
     }
 ];
 
@@ -32,8 +30,6 @@ const routes: Routes = [
     declarations: [
         HistoryPage
     ],
-    exports: [
-        RouterModule
-    ]
+    exports: []
 })
 export class HistoryPageModule {}

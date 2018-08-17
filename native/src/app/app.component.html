@@ -1,3 +1,21 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+	<nav class="bottom_container" *ngIf="is_menu_display">
+		<div class="inner_container">
+			<ul>
+				<li routerLinkActive="active" [ngClass]="{'active': is_menu_active == 'dashboard'}" (click)="click_menu('dashboard')">
+					<span class="icon"></span>
+					<p>Dashboard</p>
+				</li>
+				<li routerLinkActive="active" [ngClass]="{'active': is_menu_active == 'transaction'}" (click)="click_menu('transaction')">
+					<span class="icon"></span>
+					<p>Add Entry</p>
+				</li>
+				<li routerLinkActive="active" [ngClass]="{'active': is_menu_active == 'history'}" (click)="click_menu('history')">
+					<span class="icon"></span>
+					<p>History</p>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<ion-router-outlet></ion-router-outlet>
 </ion-app>

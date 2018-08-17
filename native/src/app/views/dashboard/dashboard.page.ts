@@ -27,9 +27,7 @@ export class DashboardPage implements OnInit {
 	user_currency: string;
 	money_sign: string;
 
-	constructor( private wallet_service: wallet_service ){
-		console.log('elas');
-	}
+	constructor( private wallet_service: wallet_service ){}
 	ngOnInit(){
 		this.get_last_5_transactions();
 		this.get_dashboard_details();

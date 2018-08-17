@@ -1,0 +1,144 @@
+// =============================================================================
+// IMPORT
+// =============================================================================
+@import "../assets/styles/ui_mixines";
+
+nav.bottom_container{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 75px;
+	background-color: white;
+	z-index: 100;
+	box-shadow: 0px 0px 5px rgba(black, .1);
+
+	div.inner_container{
+		@include container_sizing( 300px );
+
+		ul{
+			width: 100%;
+			overflow: auto;
+
+			li{
+				width: 33%;
+				float: left;
+				padding-top: 10px;
+				cursor: pointer;
+
+				span.icon{
+					font-family: 'font_awesome';
+					font-size: 24px;
+					color: $primary_blue_med;
+					text-align: center;
+					margin: 0 auto;
+					display: block;
+					padding: 4px 0;
+					transition: all 200ms;
+				}
+				p{
+					font-family: 'nixie_one';
+					font-size: 10px;
+					text-transform: uppercase;
+					color: $primary_blue_med;
+					text-align: center;
+					margin: 0 auto;
+					display: block;
+					padding: 4px 0;
+					transition: all 200ms;
+				}
+				&.active{
+					span.icon{
+						color: $secondary_yellow_med;
+					}
+					p{
+						color: $secondary_yellow_med;
+					}
+				}
+			}
+		}
+		img.logotype{
+			display: none;
+		}
+	}
+}
+
+/*
+    TABLET VERSION
+*/
+@media screen and (min-width: 768px ){
+	
+	nav.bottom_container{
+		position: relative;
+		width: 100%;
+		z-index: 0;
+		height: 50px;
+		box-shadow: 0px 0px 0px rgba(black, 0);
+	
+		div.inner_container{
+			@include container_sizing( 1000px );
+			overflow: auto;
+	
+			ul{
+				width: calc(100% - 150px);
+				float: left;
+	
+				li{
+					width: auto;
+					padding-top: 0;
+					margin: 0 10px;
+					float: none;
+					display: inline;
+	
+					&:first-child{ margin-left: 0; }
+					span.icon{
+						display: inline;
+						font-size: 16px;
+						margin: 0 5px 0 0;
+					}
+					p{
+
+						font-size: 16px;
+						color: $primary_blue_med;
+						text-align: left;
+						margin: 0;
+						display: inline;
+						padding: 0;
+						line-height: 50px;
+					}
+					&.active{
+						span.icon{}
+						p{
+							color: $secondary_yellow_med;
+							font-weight: 800;
+						}
+					}
+				}
+			}
+			img.logotype{
+				display: block;
+				width: 130px;
+				margin-top: 10px;
+				float: right;
+				outline: none;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+/*
+    SMALL SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 992px ){}
+
+/*
+    LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1200px ){}
+
+
+/*
+    SUPER LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1600px ){}

@@ -27,8 +27,6 @@ export class WalletPage implements OnInit {
 
 	open_wallet( wallet_id ){
 		localStorage.setItem("wallet_id", wallet_id);
-		this.navCtrl.goRoot('/tabs/(dashboard:dashboard)');
-		// this.navCtrl.goRoot('/tabs');
-		// this.navCtrl.goRoot('/dashboard');
+		this.navCtrl.goRoot('/dashboard');
 	}
 }

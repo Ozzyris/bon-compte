@@ -15,8 +15,7 @@ import { PipesModule } from "../../pipes/pipe.module";
 const routes: Routes = [
     {
         path: '',
-        component: DashboardPage,
-        outlet: 'dashboard'
+        component: DashboardPage
     }
 ];
 
@@ -31,8 +30,6 @@ const routes: Routes = [
     declarations: [
         DashboardPage,
     ],
-    exports: [
-        RouterModule
-    ]
+    exports: []
 })
 export class DashboardPageModule {}
