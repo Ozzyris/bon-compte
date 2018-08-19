@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -39,7 +40,7 @@ export class TransactionComponent implements OnInit {
 	button_text: String = 'Add entry';
 
 
-	constructor( private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
 	ngOnInit(){
 		this.get_user_currency();
 	}
@@ -115,24 +116,35 @@ export class TransactionComponent implements OnInit {
 	add_transaction(){
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {
-				this.transaction.wallet_id = wallet_id;
-				this.transaction.original_amount.currency = this.currency.choosen;
-				this.transaction.amount = this.convertor_service.convert_to_currency( parseInt( this.transaction.original_amount.amount ), this.get_conversion_type() );
-
-				//cent conversion
-				this.transaction.amount = this.transaction.amount*100;
-				this.transaction.original_amount.amount = this.transaction.original_amount.amount*100;
-
-				this.wallet_service.add_entry( this.transaction )
-					.subscribe( is_transaction_added => {
-							alert( is_transaction_added.message )
-							this.transaction.original_amount.amount = this.transaction.description = '';
-							this.button_text = 'Add entry';
-						}, err => {
-							this.info_note = '<span class="icon""></span> ' + err.error.message;
-							this.button_text = 'Add entry';
-						});
+				if( !wallet_id ){
+					this.router.navigate(['wallet']);
+				}else{
+					this.transaction.wallet_id = wallet_id;
+					this.transaction.original_amount.currency = this.currency.choosen;
+					this.transaction.amount = this.convertor_service.convert_to_currency( parseInt( this.transaction.original_amount.amount ), this.get_conversion_type() );
+	
+					//cent conversion
+					this.transaction.amount = this.transaction.amount*100;
+					this.transaction.original_amount.amount = this.transaction.original_amount.amount*100;
+	
+					this.wallet_service.add_entry( this.transaction )
+						.subscribe( is_transaction_added => {
+								alert( is_transaction_added.message )
+								this.transaction.original_amount.amount = this.transaction.description = '';
+								this.button_text = 'Add entry';
+							}, error => {
+								if(error.error[0].code == 'middleware_error') this.loggedout();
+								this.info_note = '<span class="icon""></span> ' + error.error.message;
+								this.button_text = 'Add entry';
+							});
+				}
 			})
+	}
+
+	loggedout(){
+		localStorage.removeItem('session');
+		localStorage.removeItem('wallet_id');
+		this.router.navigate(['login']);
 	}
 
 	dismiss_input(){

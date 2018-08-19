@@ -2,22 +2,25 @@ import { NgModule } from '@angular/core';
 
 //Pipe
 import { SanitizerPipe } from './sanitizer/sanitizer.pipe';
-import { TimeAgoPipe } from 'angular2-moment';
 import { ConvertorPipe } from './convertor/convertor.pipe';
+import { ShrinkorPipe } from './shrinkor/shrinkor.pipe';
+import { MomentPipe } from './moment/moment.pipe';
 
 @NgModule({
     declarations: [
         SanitizerPipe,
-        TimeAgoPipe,
-        ConvertorPipe
+        ConvertorPipe,
+        ShrinkorPipe,
+        MomentPipe
     ],
     imports: [
 
     ],
     exports: [
         SanitizerPipe,
-        TimeAgoPipe,
-        ConvertorPipe
+        ConvertorPipe,
+        ShrinkorPipe,
+        MomentPipe
     ]
 })
 export class PipesModule{}

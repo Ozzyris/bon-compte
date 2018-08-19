@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-
-const httpOptions = {
-	headers: new HttpHeaders({
-		'Content-Type':  'application/json'
-	})
-};
 
 @Injectable({
 	providedIn: 'root'
@@ -20,7 +14,8 @@ export class auth_service {
 
 	// SIGN IN
 	signin( user_credential ): Observable<any>{
+		console.log('test');
 		let url = this.base_url + 'signin';
-		return this.http.post(url, user_credential, httpOptions);
+		return this.http.post(url, user_credential);
 	}
 }

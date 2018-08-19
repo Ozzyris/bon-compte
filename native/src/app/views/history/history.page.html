@@ -9,11 +9,11 @@
 				<div class="last_entries">
 					<div class="body">
 						<ul>
-							<li class="entry" *ngFor="let transaction of all_transactions | async let i = index" (click)="activate_item( i )" [ngClass]="{'active': i == selected_item}">
+							<li class="entry" *ngFor="let transaction of all_transactions; let i = index" (click)="activate_item( i )" [ngClass]="{'active': i == selected_item}">
 								<span class="avatar_illustration" [style.backgroundImage]="'url(' + api_url + transaction.author.avatar + ')'"></span>
 								<div class="content">
 									<p class="description">{{transaction.description}}</p>
-									<p class="small">{{transaction.creation_date | amTimeAgo}}</p>
+									<p class="small">{{transaction.creation_date | moment}}</p>
 								</div>
 								<div class="price">
 									<p>{{money_sign}} {{transaction.amount | convertor:user_currency}}</p>

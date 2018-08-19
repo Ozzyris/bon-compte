@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -27,7 +28,7 @@ export class DashboardComponent implements OnInit {
 	user_currency: string;
 	money_sign: string;
 
-	constructor( private wallet_service: wallet_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service ){}
 	ngOnInit(){
 		this.get_last_5_transactions();
 		this.get_dashboard_details();
@@ -75,12 +76,26 @@ export class DashboardComponent implements OnInit {
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
 
-				this.wallet_service.get_dashboard_details( payload )
-					.subscribe( dashboard_details => {
-						this.dashboard_details.my_details = dashboard_details.user_details;
-						this.dashboard_details.partner_details = dashboard_details.partner_details;
-					})
+				if( !wallet_id ){
+					this.router.navigate(['wallet']);
+				}else{
+					this.wallet_service.get_dashboard_details( payload )
+						.subscribe( dashboard_details => {
+							this.dashboard_details.my_details = dashboard_details.user_details;
+							this.dashboard_details.partner_details = dashboard_details.partner_details;
+						}, error => {
+							console.log(error);
+							if(error.error[0].code == 'middleware_error') this.loggedout();
+						})
+				}
+				
 			})
+	}
+
+	loggedout(){
+		localStorage.removeItem('session');
+		localStorage.removeItem('wallet_id');
+		this.router.navigate(['login']);
 	}
 	get_last_5_transactions(){
 		let payload = {

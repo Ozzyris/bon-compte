@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +13,19 @@ export class wallet_service {
 	base_url = environment.api_url + 'public/';
 	httpOptions: any;
 
-	constructor( private http: HttpClient ){
+	constructor( private router: Router, private http: HttpClient ){
     	this.get_session_from_storage()
     		.then( session => {
-    			this.httpOptions = {
-    				headers: new HttpHeaders({
-    					'Content-Type':  'application/json',
-    					'X-Auth-Token': session
-    				})
-    			};
+    			if( !session ){
+					this.router.navigate(['login']);
+    			}else{
+    				this.httpOptions = {
+    					headers: new HttpHeaders({
+    						'Content-Type':  'application/json',
+    						'X-Auth-Token': session
+    					})
+    				};
+    			}
     		})
 	}
 

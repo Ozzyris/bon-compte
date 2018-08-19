@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -27,21 +29,25 @@ export class DashboardPage implements OnInit {
 	user_currency: string;
 	money_sign: string;
 
-	constructor( private wallet_service: wallet_service ){}
+	constructor( public navCtrl: NavController, private storage: Storage, private wallet_service: wallet_service ){}
 	ngOnInit(){
 		this.get_last_5_transactions();
 		this.get_dashboard_details();
 		this.get_user_currency();
 	}
 
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
 	get_currency_from_storage(): Promise<any>{
 		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('currency') );
+			this.storage.get('currency').then((val) => {
+				resolve( val );
+			});
+		})
+	}
+	get_wallet_id_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			this.storage.get('wallet_id').then((val) => {
+				resolve( val );
+			});
 		})
 	}
 
@@ -75,11 +81,18 @@ export class DashboardPage implements OnInit {
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
 
-				this.wallet_service.get_dashboard_details( payload )
-					.subscribe( dashboard_details => {
-						this.dashboard_details.my_details = dashboard_details.user_details;
-						this.dashboard_details.partner_details = dashboard_details.partner_details;
-					})
+				if( !wallet_id ){
+					this.navCtrl.goRoot('/wallet');
+				}else{
+					this.wallet_service.get_dashboard_details( payload )
+						.subscribe( dashboard_details => {
+							this.dashboard_details.my_details = dashboard_details.user_details;
+							this.dashboard_details.partner_details = dashboard_details.partner_details;
+						}, error => {
+							console.log(error);
+							if(error.error[0].code == 'middleware_error') this.loggedout();
+						})
+				}
 			})
 	}
 	get_last_5_transactions(){
@@ -93,5 +106,10 @@ export class DashboardPage implements OnInit {
 
 				this.last_5_transactions = this.wallet_service.get_last_5_transactions( payload );
 			})	
+	}
+	loggedout(){
+		this.storage.remove('session')
+		this.storage.remove('wallet_id')
+		this.navCtrl.goRoot('/login');
 	}
 }

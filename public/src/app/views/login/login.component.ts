@@ -28,10 +28,34 @@ export class LoginComponent implements OnInit {
 	//primary cta
 	button_text: string = 'Login';
 
-	constructor( private router: Router, private auth_service: auth_service, private validator_service: validator_service ){}
+	constructor( private router: Router, private auth_service: auth_service, private validator_service: validator_service ){
+		this.check_storage();
+	}
 	ngOnInit(){}
 
-	 input_verification(){
+	get_wallet_id_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			resolve( localStorage.getItem('wallet_id') );
+		})
+	}
+	get_session_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			resolve( localStorage.getItem('session') );
+		})
+	}
+
+	check_storage(){
+		Promise.all([this.get_session_from_storage(), this.get_wallet_id_from_storage()])
+			.then( values => {
+				if(values[0] && values[1]){
+					this.router.navigate(['dashboard']);
+				}else if( values[0] ){
+					this.router.navigate(['wallet']);
+				}
+			});
+	}
+
+	input_verification(){
 		this.button_text = 'Loading';
 
 		let open_door = true;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -18,7 +19,7 @@ export class HistoryComponent implements OnInit {
 	money_sign: string;
 	selected_item: string;
 
-	constructor( private wallet_service: wallet_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service ){}
 	ngOnInit(){
 		this.get_all_transactions();
 		this.get_user_currency();
@@ -65,9 +66,25 @@ export class HistoryComponent implements OnInit {
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
-
-				this.all_transactions = this.wallet_service.get_all_transactions( payload );
+				
+				if( !wallet_id ){
+					this.router.navigate(['wallet']);
+				}else{
+					this.wallet_service.get_all_transactions( payload )
+						.subscribe( all_transactions => {
+								this.all_transactions = all_transactions
+							}, error => {
+								console.log(error.error);
+								if(error.error[0].code == 'middleware_error') this.loggedout();
+							});
+				}
 			})	
+	}
+
+	loggedout(){
+		localStorage.removeItem('session');
+		localStorage.removeItem('wallet_id');
+		this.router.navigate(['login']);
 	}
 
 	activate_item( index ){

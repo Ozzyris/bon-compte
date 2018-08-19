@@ -53,3 +53,8 @@ input, textarea, li, svg{
     }
     border-radius: 0;
 }
+input, textarea {   
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}

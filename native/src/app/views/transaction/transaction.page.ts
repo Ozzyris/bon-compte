@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
+
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -36,20 +39,9 @@ export class TransactionPage implements OnInit {
 
 	button_text: String = 'Add entry';
 
-	constructor( private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
+	constructor( public navCtrl: NavController, private storage: Storage, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
 	ngOnInit(){
 		this.get_user_currency();
-	}
-
-	get_currency_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('currency') );
-		})
-	}
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
 	}
 
 	get_user_currency(){
@@ -57,6 +49,20 @@ export class TransactionPage implements OnInit {
 			.then( currency => {
 				this.update_currency( currency );
 			})
+	}
+	get_currency_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			this.storage.get('currency').then((val) => {
+				resolve( val );
+			});
+		})
+	}
+	get_wallet_id_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			this.storage.get('wallet_id').then((val) => {
+				resolve( val );
+			});
+		})
 	}
 	update_currency( currency ){
 		this.currency.choosen = currency;
@@ -112,27 +118,36 @@ export class TransactionPage implements OnInit {
 	add_transaction(){
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {
-				this.transaction.wallet_id = wallet_id;
-				this.transaction.original_amount.currency = this.currency.choosen;
-				this.transaction.amount = this.convertor_service.convert_to_currency( parseInt( this.transaction.original_amount.amount ), this.get_conversion_type() );
-
-				//cent conversion
-				this.transaction.amount = this.transaction.amount*100;
-				this.transaction.original_amount.amount = this.transaction.original_amount.amount*100;
-
-				this.wallet_service.add_entry( this.transaction )
-					.subscribe( is_transaction_added => {
-							alert( is_transaction_added.message )
-							this.transaction.original_amount.amount = this.transaction.description = '';
-							this.button_text = 'Add entry';
-						}, err => {
-							this.info_note = '<span class="icon""></span> ' + err.error.message;
-							this.button_text = 'Add entry';
-						});
+				if( !wallet_id ){
+					this.navCtrl.goRoot('/wallet');
+				}else{
+					this.transaction.wallet_id = wallet_id;
+					this.transaction.original_amount.currency = this.currency.choosen;
+					this.transaction.amount = this.convertor_service.convert_to_currency( parseInt( this.transaction.original_amount.amount ), this.get_conversion_type() );
+	
+					//cent conversion
+					this.transaction.amount = this.transaction.amount*100;
+					this.transaction.original_amount.amount = this.transaction.original_amount.amount*100;
+	
+					this.wallet_service.add_entry( this.transaction )
+						.subscribe( is_transaction_added => {
+								alert( is_transaction_added.message )
+								this.transaction.original_amount.amount = this.transaction.description = '';
+								this.button_text = 'Add entry';
+							}, error => {
+								if(error.error[0].code == 'middleware_error') this.loggedout();
+								this.info_note = '<span class="icon""></span> ' + error.error.message;
+								this.button_text = 'Add entry';
+							});
+				}
 			})
 	}
-
 	dismiss_input(){
 		this.transaction.amount = this.transaction.description = '';
+	}
+	loggedout(){
+		this.storage.remove('session')
+		this.storage.remove('wallet_id')
+		this.navCtrl.goRoot('/login');
 	}
 }

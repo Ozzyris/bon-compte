@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Storage } from '@ionic/storage';
+import { NavController } from '@ionic/angular';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -17,20 +19,24 @@ export class HistoryPage implements OnInit {
 	money_sign: string;
 	selected_item: string;
 
-	constructor( private wallet_service: wallet_service ){}
+	constructor( public navCtrl: NavController, private storage: Storage, private wallet_service: wallet_service ){}
 	ngOnInit(){
 		this.get_all_transactions();
 		this.get_user_currency();
 	}
 
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
 	get_currency_from_storage(): Promise<any>{
 		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('currency') );
+			this.storage.get('currency').then((val) => {
+				resolve( val );
+			});
+		})
+	}
+	get_wallet_id_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			this.storage.get('wallet_id').then((val) => {
+				resolve( val );
+			});
 		})
 	}
 	get_conversion_type( currency ){
@@ -64,16 +70,30 @@ export class HistoryPage implements OnInit {
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
-
-				this.all_transactions = this.wallet_service.get_all_transactions( payload );
+				
+				if( !wallet_id ){
+					this.navCtrl.goRoot('/wallet');
+				}else{
+					this.wallet_service.get_all_transactions( payload )
+						.subscribe( all_transactions => {
+								this.all_transactions = all_transactions
+							}, error => {
+								console.log(error.error);
+								if(error.error[0].code == 'middleware_error') this.loggedout();
+							});
+				}
 			})	
 	}
-
 	activate_item( index ){
 		if( index == this.selected_item ){
 			this.selected_item = 'x';
 		}else{
 			this.selected_item = index;
 		}		
+	}
+	loggedout(){
+		this.storage.remove('session')
+		this.storage.remove('wallet_id')
+		this.navCtrl.goRoot('/login');
 	}
 }

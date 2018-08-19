@@ -31,7 +31,11 @@ section.transaction{
 			div.input_container{
 				margin-bottom: 20px;
 				position: relative;
+				z-index: 2;
 
+				&:last-child{
+					z-index: 1;
+				}
 				label{
 					color: #020433;
 					font-size: 12px;
