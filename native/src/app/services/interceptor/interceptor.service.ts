@@ -21,9 +21,11 @@ export class interceptor_service implements HttpInterceptor {
 				// if( !session ){
 					// this.navCtrl.goRoot('/login');
 				// }else{
+				//https://blog.angularindepth.com/insiders-guide-into-interceptors-and-httpclient-mechanics-in-angular-103fbdb397bf
  					const headers = req.headers
 						.set('X-Auth-Token', session)
 						.append('Content-Type', 'application/json');
+
  					const reqClone = req.clone({
 						headers 
 					});
