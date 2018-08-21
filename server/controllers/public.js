@@ -167,6 +167,7 @@ router.use(bodyParser.json());
 			author: {}
 		},
 		user_id;
+
 		user_model.get_id_from_session( req.headers['x-auth-token'] )
 			.then( id => {
 				user_id = id;
@@ -206,6 +207,33 @@ router.use(bodyParser.json());
 			.catch( error => {
 				res.status(401).json( error );
 			})		
+	})
+	router.post('/delete-transaction', function (req, res) {
+		let transaction = {}
+
+		wallet_model.get_transactiondetail_from_id( req.body.transaction_id )
+			.then( transaction_detail => {
+				transaction = transaction_detail;
+				return wallet_model.get_walletdetail_from_id( req.body.wallet_id )
+			})
+			.then( wallet_detail => {
+				// Get USD amount 
+				// addition the (total /nb of member) to the each member's balance
+				// substracte the (total - you part) to your balance
+				// substract the all amount to your spending
+
+				// wallet_detail.member.length
+
+				return wallet_model.delete_transaction_from_wallet( req.body.wallet_id, req.body.transaction_id );
+			})
+			.then( is_amount_updated => {
+				res.status(200).json({message: 'New transaction added 💰'});
+			})
+			.catch( error => {
+				res.status(401).json( error );
+			})
+
+
 	})
 
 module.exports = {
