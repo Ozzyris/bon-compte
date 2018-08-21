@@ -208,6 +208,18 @@ router.use(bodyParser.json());
 			})		
 	})
 
+	router.post('/remove-transaction', function (req, res) {
+		let transaction;
+
+		wallet_model.get_transactiondetail_from_id( req.body.wallet_id, req.body.transaction_id )
+			.then( transaction_detail => {
+				console.log( transaction_detail );
+			})
+			.catch( error => {
+				res.status(401).json( error );
+			})
+	})
+
 module.exports = {
 	"public" : router
 };

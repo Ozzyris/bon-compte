@@ -2,6 +2,23 @@ var mongoose = require("./mongoose"),
     moment = require('moment'),
     Promise = require('bluebird');
 
+
+var transaction_schema = new mongoose.Schema({
+    creation_date: {type: Date, default: moment()},
+    amount: {type: Number},
+    description: {type: String},
+    original_amount: {
+        amount: {type: String},
+        currency: {type: String},
+    },
+    author: {
+        user_id: {type: String},
+        family_name: {type: String},
+        given_name: {type: String},
+        avatar: {type: String},
+    },
+});
+
 var wallet = new mongoose.Schema({
     creation_date: {type: Date, default: moment()},
     last_edit: {type: Date, default: moment()},
@@ -19,23 +36,7 @@ var wallet = new mongoose.Schema({
             balance: {type: Number, default: 0},
         }
     ],
-    transaction: [
-        {
-            creation_date: {type: Date, default: moment()},
-            amount: {type: Number},
-            description: {type: String},
-            original_amount: {
-                amount: {type: String},
-                currency: {type: String},
-            },
-            author: {
-                user_id: {type: String},
-                family_name: {type: String},
-                given_name: {type: String},
-                avatar: {type: String},
-            },
-        }
-    ]
+    transaction: [transaction_schema] 
 }, {collection: 'wallet'});
 
     wallet.statics.add_member_to_wallet = function( member, id ){
@@ -111,10 +112,26 @@ var wallet = new mongoose.Schema({
     };
     wallet.statics.get_walletdetail_from_id = function( id ){
         return new Promise((resolve, reject) => {
-            this.findOne({ _id : id }, {'last_edit':1, '_id':1, 'name':1, 'background_image':1, 'member':1}).exec()
+            this.findOne({ _id : id })
+                .select({ '_id': 1, 'last_edit': 1, 'name': 1, 'background_image': 1, 'member': 1 })
+                .sort({'creation_date': -1})
+                .exec()
                 .then( wallet => {
                     if( wallet ){
                         resolve( wallet )
+                    }else{
+                        reject({ message: 'Your id does not exist', code: 'id_not_exist'});
+                    }
+                })
+        });
+    }
+    wallet.statics.get_transactiondetail_from_id = function( wallet_id, transaction_id ){
+        return new Promise((resolve, reject) => {
+            this.find({ _id: wallet_id })
+                .exec()
+                .then( transaction => {
+                    if( transaction ){
+                        resolve( transaction )
                     }else{
                         reject({ message: 'Your id does not exist', code: 'id_not_exist'});
                     }
@@ -125,7 +142,10 @@ var wallet = new mongoose.Schema({
     // TRANSACTION
     wallet.statics.get_all_transaction_from_id = function( id ){
         return new Promise((resolve, reject) => {
-            this.findOne({ _id : id }, {'transaction':1}).sort({'creation_date': -1}).exec()
+            this.findOne({ _id : id })
+                .select({ 'transaction': 1 })
+                .sort({ 'creation_date': -1 })
+                .exec()
                 .then( transaction => {
                     if( transaction ){
                         resolve( transaction.transaction )
