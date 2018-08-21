@@ -8,6 +8,8 @@ import { NavController } from '@ionic/angular';
 @Injectable()
 
 export class interceptor_service implements HttpInterceptor {
+	httpOptions: any;
+
 	constructor(private storage: Storage, public navCtrl: NavController ){}
 
 	get_session_from_storage(){
@@ -18,19 +20,13 @@ export class interceptor_service implements HttpInterceptor {
 	intercept(req: HttpRequest<any>, next: HttpHandler) : Observable<HttpEvent<any>>{
 		return from(this.get_session_from_storage())
 			.pipe(switchMap(session => {
-				// if( !session ){
-					// this.navCtrl.goRoot('/login');
-				// }else{
-				//https://blog.angularindepth.com/insiders-guide-into-interceptors-and-httpclient-mechanics-in-angular-103fbdb397bf
- 					const headers = req.headers
-						.set('X-Auth-Token', session)
-						.append('Content-Type', 'application/json');
-
- 					const reqClone = req.clone({
-						headers 
-					});
-					return next.handle(reqClone);
-				// }
+ 				const headers = req.headers
+					.set('X-Auth-Token', session)
+					.append('Content-Type', 'application/json');
+ 				const reqClone = req.clone({
+					headers 
+				});
+				return next.handle(reqClone);
 			}));
 	}
 }

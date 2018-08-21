@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
 	user_information: any = {
 		email: '',
 		password: '',
-		stay_loggedin: false
+		stay_loggedin: true
 	};
 
 	//inputs feedback
@@ -54,6 +54,8 @@ export class LoginPage implements OnInit {
 					this.navCtrl.goRoot('/dashboard');
 				}else if( values[0] ){
 					this.navCtrl.goRoot('/wallet');
+				}else if( values[0] == null ){
+					this.storage.set('session', 'empty');
 				}
 			});
 	}
@@ -85,10 +87,8 @@ export class LoginPage implements OnInit {
 	}
 
 	signin(){
-		console.log(this.user_information);
 		this.auth_service.signin( this.user_information )
 			.subscribe( user_details => {
-				console.log('alex' + user_details);
 					if( user_details ){
 						this.storage.set('session', user_details.session);
 						this.storage.set('currency', user_details.currency);
@@ -97,8 +97,8 @@ export class LoginPage implements OnInit {
 						this.info_password = '<span class="icon""></span> An unexpeted error happen';
 					}
 				}, err => {
-					// console.log(err);
-					// this.info_password = '<span class="icon""></span> ' + err.error.message;
+					console.log(err);
+					this.info_password = '<span class="icon""></span> ' + err.error.message;
 					this.button_text = 'Login';
 				});
 	}
