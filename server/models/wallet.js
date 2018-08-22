@@ -2,23 +2,6 @@ var mongoose = require("./mongoose"),
     moment = require('moment'),
     Promise = require('bluebird');
 
-
-var transaction_schema = new mongoose.Schema({
-    creation_date: {type: Date, default: moment()},
-    amount: {type: Number},
-    description: {type: String},
-    original_amount: {
-        amount: {type: String},
-        currency: {type: String},
-    },
-    author: {
-        user_id: {type: String},
-        family_name: {type: String},
-        given_name: {type: String},
-        avatar: {type: String},
-    },
-});
-
 var wallet = new mongoose.Schema({
     creation_date: {type: Date, default: moment()},
     last_edit: {type: Date, default: moment()},
@@ -36,7 +19,23 @@ var wallet = new mongoose.Schema({
             balance: {type: Number, default: 0},
         }
     ],
-    transaction: [transaction_schema] 
+    transaction: [
+        {
+            creation_date: {type: Date, default: moment()},
+            amount: {type: Number},
+            description: {type: String},
+            original_amount: {
+                amount: {type: String},
+                currency: {type: String},
+            },
+            author: {
+                user_id: {type: String},
+                family_name: {type: String},
+                given_name: {type: String},
+                avatar: {type: String},
+            },
+        }
+    ]
 }, {collection: 'wallet'});
 
     wallet.statics.add_member_to_wallet = function( member, id ){
@@ -50,7 +49,8 @@ var wallet = new mongoose.Schema({
                         avatar: member.avatar
                     }
                 }
-            }).exec()
+            })
+            .exec()
             .then(session =>{
                 resolve( true );
             })
@@ -65,7 +65,8 @@ var wallet = new mongoose.Schema({
                     'member.$.last_edit': moment(),
                     'last_edit': moment()
                 }
-            }).exec()
+            })
+            .exec()
             .then(session =>{
                 resolve( true );
             })
@@ -78,60 +79,23 @@ var wallet = new mongoose.Schema({
                     'member.$.balance': balance,
                     'last_edit': moment()
                 }
-            }).exec()
+            })
+            .exec()
             .then(session =>{
                 resolve( true );
             })
         })
     };
-    wallet.statics.add_transaction_to_wallet = function( transaction, id ){
-        return new Promise((resolve, reject) => {
-            wallet.update({ _id: id }, {
-                $push:{
-                    'transaction': {
-                        creation_date: moment(),
-                        amount: transaction.amount,
-                        description: transaction.description,
-                        original_amount: {
-                            amount: transaction.original_amount.amount,
-                            currency: transaction.original_amount.currency,
-                        },
-                        author: {
-                            user_id: transaction.author.user_id,
-                            family_name: transaction.author.family_name,
-                            given_name: transaction.author.given_name,
-                            avatar: transaction.author.avatar,
-                        }
-                    }
-                }
-            }).exec()
-            .then(session =>{
-                resolve( true );
-            })
-        })
-    };
+
     wallet.statics.get_walletdetail_from_id = function( id ){
         return new Promise((resolve, reject) => {
             this.findOne({ _id : id })
-                .select({ '_id': 1, 'last_edit': 1, 'name': 1, 'background_image': 1, 'member': 1 })
-                .sort({'creation_date': -1})
+                // .select({ '_id': 1, 'last_edit': 1, 'name': 1, 'background_image': 1, 'member': 1 })
+                .sort({ 'creation_date': -1 })
                 .exec()
                 .then( wallet => {
                     if( wallet ){
                         resolve( wallet )
-                    }else{
-                        reject({ message: 'Your id does not exist', code: 'id_not_exist'});
-                    }
-                })
-        });
-    }
-    wallet.statics.get_transactiondetail_from_id = function( wallet_id, transaction_id ){
-        return new Promise((resolve, reject) => {
-            this.find({ _id: wallet_id })
-                .exec()
-                .then( transaction => {
-                    if( transaction ){
-                        resolve( transaction )
                     }else{
                         reject({ message: 'Your id does not exist', code: 'id_not_exist'});
                     }
@@ -155,6 +119,45 @@ var wallet = new mongoose.Schema({
                 })
         });
     }
-
+    wallet.statics.add_transaction_to_wallet = function( transaction, id ){
+        return new Promise((resolve, reject) => {
+            wallet.update({ _id: id }, {
+                $push:{
+                    'transaction': {
+                        creation_date: moment(),
+                        amount: transaction.amount,
+                        description: transaction.description,
+                        original_amount: {
+                            amount: transaction.original_amount.amount,
+                            currency: transaction.original_amount.currency,
+                        },
+                        author: {
+                            user_id: transaction.author.user_id,
+                            family_name: transaction.author.family_name,
+                            given_name: transaction.author.given_name,
+                            avatar: transaction.author.avatar,
+                        }
+                    }
+                }
+            })
+            .exec()
+            .then(session =>{
+                resolve( true );
+            })
+        })
+    };
+    wallet.statics.remove_transaction_from_wallet = function( wallet_id, transaction_id ){
+        return new Promise((resolve, reject) => {
+            wallet.update({_id : wallet_id}, {
+                $pull: {
+                    "transaction" : { _id: transaction_id }
+                }
+            })
+            .exec()
+            .then(session =>{
+                resolve( true );
+            })
+        })
+    };
 var wallet = mongoose.DB.model('wallet', wallet);
 module.exports.wallet = wallet;

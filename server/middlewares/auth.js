@@ -13,7 +13,6 @@ function check_auth(req, res, next) {
 		res.status(401).send([{message: "Your authentification token is invalid", code: 'auth_invalid'}])
 		return;
 	}
-
 	user.get_auth_from_session( xtoken )
 		.then(token_details => {
 			session = token_details;

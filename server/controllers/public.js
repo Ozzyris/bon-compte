@@ -129,9 +129,6 @@ router.use(bodyParser.json());
 					return a>b ? -1 : a<b ? 1 : 0;
 				});
 				filtered_transaction = filtered_transaction.slice(0, 5);
-
-
-				console.log(filtered_transaction);
 				res.status(200).json( filtered_transaction );
 			})
 			.catch( error => {
@@ -201,47 +198,45 @@ router.use(bodyParser.json());
 
 				return wallet_model.add_transaction_to_wallet( transaction, req.body.wallet_id );
 			})
-			.then( is_amount_updated => {
+			.then( is_transaction_added => {
 				res.status(200).json({message: 'New transaction added 💰'});
 			})
 			.catch( error => {
 				res.status(401).json( error );
 			})		
 	})
-	router.post('/delete-transaction', function (req, res) {
-		let transaction = {}
-
-		wallet_model.get_transactiondetail_from_id( req.body.transaction_id )
-			.then( transaction_detail => {
-				transaction = transaction_detail;
-				return wallet_model.get_walletdetail_from_id( req.body.wallet_id )
-			})
-			.then( wallet_detail => {
-				// Get USD amount 
-				// addition the (total /nb of member) to the each member's balance
-				// substracte the (total - you part) to your balance
-				// substract the all amount to your spending
-
-				// wallet_detail.member.length
-
-				return wallet_model.delete_transaction_from_wallet( req.body.wallet_id, req.body.transaction_id );
-			})
-			.then( is_amount_updated => {
-				res.status(200).json({message: 'New transaction added 💰'});
-			})
-			.catch( error => {
-				res.status(401).json( error );
-			})
-
-
-	})
 
 	router.post('/remove-transaction', function (req, res) {
-		let transaction;
+		let transaction = {};
 
-		wallet_model.get_transactiondetail_from_id( req.body.wallet_id, req.body.transaction_id )
-			.then( transaction_detail => {
-				console.log( transaction_detail );
+		wallet_model.get_walletdetail_from_id( req.body.wallet_id )
+			.then( wallet_detail => {
+				for(var i = 0; i <= wallet_detail.transaction.length - 1; i++){
+				    if( wallet_detail.transaction[i]._id == req.body.transaction_id){
+				        transaction = wallet_detail.transaction[i];
+				    }
+				}
+				for(var i = 0; i <= wallet_detail.member.length - 1; i++){
+					if( wallet_detail.member[i].user_id == transaction.author.user_id){
+						let spending = wallet_detail.member[i].spending,
+							balance = wallet_detail.member[i].balance;
+						spending = parseInt(spending) - parseInt(transaction.amount);
+						balance = parseInt(balance) - (parseInt(transaction.amount) - (parseInt(transaction.amount) / wallet_detail.member.length));
+						spending = Math.round(spending);
+						balance = Math.round(balance);
+						wallet_model.update_member_amount_on_wallet( wallet_detail.member[i].user_id, spending, balance );
+					}else{
+						let balance = wallet_detail.member[i].balance;
+						balance = parseInt(balance) + (parseInt(transaction.amount) / wallet_detail.member.length);
+						balance = Math.round(balance);
+						wallet_model.update_other_member_amount_on_wallet( wallet_detail.member[i].user_id, balance );
+					}
+				}
+
+				return wallet_model.remove_transaction_from_wallet( req.body.wallet_id, req.body.transaction_id );
+			})
+			.then( is_transaction_deleted => {
+				res.status(200).json({message: 'Transaction deleted 💰'});
 			})
 			.catch( error => {
 				res.status(401).json( error );
