@@ -18,6 +18,9 @@
 								<div class="price">
 									<p>{{money_sign}} {{transaction.amount | convertor:user_currency}}</p>
 								</div>
+								<div class="footer" *ngIf="transaction.author.user_id == user_id">
+									<a class="button" (click)="remove_entry(transaction._id)">remove</a>
+								</div>
 							</li>
 						</ul>
 					</div>

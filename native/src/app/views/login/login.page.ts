@@ -92,6 +92,7 @@ export class LoginPage implements OnInit {
 					if( user_details ){
 						this.storage.set('session', user_details.session);
 						this.storage.set('currency', user_details.currency);
+						this.storage.set('user_id', user_details.user_id);
 						this.navCtrl.goRoot('/wallet');
 					}else{
 						this.info_password = '<span class="icon""></span> An unexpeted error happen';

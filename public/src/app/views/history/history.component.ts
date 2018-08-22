@@ -108,7 +108,6 @@ export class HistoryComponent implements OnInit {
 			this.selected_item = index;
 		}		
 	}
-
 	remove_entry( transaction_id ){
 		this.get_wallet_id_from_storage()
 			.then( wallet_id => {

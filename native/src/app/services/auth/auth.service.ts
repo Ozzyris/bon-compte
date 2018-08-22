@@ -14,7 +14,6 @@ export class auth_service {
 
 	// SIGN IN
 	signin( user_credential ): Observable<any>{
-		console.log('test');
 		let url = this.base_url + 'signin';
 		return this.http.post(url, user_credential);
 	}
