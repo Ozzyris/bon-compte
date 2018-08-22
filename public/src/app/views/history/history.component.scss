@@ -76,6 +76,9 @@ section.history{
 										color: white;
 									}
 								}
+								div.footer{
+									display: block;
+								}
 							}
 							span.avatar_illustration{
 								float: left;
@@ -115,6 +118,23 @@ section.history{
 									font-size: 14px;
 									font-family: 'nixie_one';
 									text-align: right;
+								}
+							}
+							div.footer{
+								display: none;
+								width: 100%;
+								overflow: auto;
+
+								a.button{
+									display: block;
+									float: right;
+									line-height: 24px;
+									font-family: 'nixie_one';
+									font-size: 12px;
+									color: #0F73EE;
+									background-color: white;
+									border-radius: 2px; 
+									padding: 0 12px;
 								}
 							}
 						}

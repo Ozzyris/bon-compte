@@ -54,9 +54,13 @@ export class wallet_service {
 		let url = this.base_url + 'get-all-transactions';
 		return this.http.post(url, payload, this.httpOptions);
 	}
-	
+
 	add_entry( payload ): Observable<any>{
 		let url = this.base_url + 'add-transaction';
+		return this.http.post(url, payload, this.httpOptions);
+	}	
+	remove_entry( payload ): Observable<any>{
+		let url = this.base_url + 'remove-transaction';
 		return this.http.post(url, payload, this.httpOptions);
 	}
 }

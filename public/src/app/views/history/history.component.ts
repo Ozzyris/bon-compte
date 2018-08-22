@@ -16,15 +16,22 @@ export class HistoryComponent implements OnInit {
 	api_url: string = environment.api_url + 'uploads/';
 	all_transactions: any;
 	user_currency: string;
+	user_id: string;
 	money_sign: string;
 	selected_item: string;
 
 	constructor( private router: Router, private wallet_service: wallet_service ){}
 	ngOnInit(){
+		this.get_user_id();
 		this.get_all_transactions();
 		this.get_user_currency();
 	}
 
+	get_user_id_from_storage(): Promise<any>{
+		return new Promise((resolve, reject)=>{
+			resolve( localStorage.getItem('user_id') );
+		})
+	}
 	get_wallet_id_from_storage(): Promise<any>{
 		return new Promise((resolve, reject)=>{
 			resolve( localStorage.getItem('wallet_id') );
@@ -55,6 +62,13 @@ export class HistoryComponent implements OnInit {
 		this.get_currency_from_storage()
 			.then( currency => {
 				this.user_currency = this.get_conversion_type( currency );
+			})
+	}
+	
+	get_user_id(){
+		this.get_user_id_from_storage()
+			.then( user_id => {
+				this.user_id = user_id;
 			})
 	}
 
@@ -93,5 +107,27 @@ export class HistoryComponent implements OnInit {
 		}else{
 			this.selected_item = index;
 		}		
+	}
+
+	remove_entry( transaction_id ){
+		this.get_wallet_id_from_storage()
+			.then( wallet_id => {
+				let payload = {
+					wallet_id: wallet_id,
+					transaction_id: transaction_id
+				}
+
+				this.wallet_service.remove_entry( payload )
+						.subscribe( is_entry_removed => {
+								console.log(is_entry_removed);
+								alert( is_entry_removed.message );
+								this.get_all_transactions();
+							}, error => {
+								console.log(error.error);
+								if(error.error[0].code == 'middleware_error') this.loggedout();
+							});
+
+			})
+		
 	}
 }

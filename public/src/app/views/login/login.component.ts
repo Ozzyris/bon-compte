@@ -87,6 +87,7 @@ export class LoginComponent implements OnInit {
 					if( user_details ){
 						localStorage.setItem("session", user_details.session);
 						localStorage.setItem("currency", user_details.currency);
+						localStorage.setItem("user_id", user_details.user_id);
 						this.router.navigate(['wallet']);
 					}
 				}, err => {
