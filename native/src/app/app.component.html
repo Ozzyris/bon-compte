@@ -17,5 +17,32 @@
 			</ul>
 		</div>
 	</nav>
+
+	<a class="icon" *ngIf="is_menu_display"  (click)="is_side_menu_active = true"></a>
+	<nav class="left_button" *ngIf="is_menu_display" [ngClass]="{'active': is_side_menu_active}">
+		<div class="header">
+			<span class="icon" (click)="is_side_menu_active = false"></span>
+		</div>
+		<div class="user">
+			<div class="avatar" style="background-image: url('http://placehold.it/300x300')"></div>
+			<h2>Alexandre Nicol</h2>
+		</div>
+		<div class="body">
+			<ul>
+				<li>
+					<span class="icon"></span>
+					<p>Profile</p>
+				</li>
+				<li (click)="change_wallet()">
+					<span class="icon"></span>
+					<p>Wallets</p>
+				</li>
+				<li (click)="logged_out()">
+					<span class="icon"></span>
+					<p>Logout</p>
+				</li>
+			</ul>
+		</div>
+	</nav>
 	<ion-router-outlet></ion-router-outlet>
 </ion-app>

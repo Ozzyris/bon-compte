@@ -4,7 +4,7 @@
 			<h1>Wallet</h1>
 		</div>
 		<div class="body">
- 			<div class="card_wallet" *ngFor="let wallet of wallets | async" (click)="open_wallet( wallet._id )" [style.backgroundImage]="'url(' + api_url + wallet.background_image + ')'">
+ 			<div class="card_wallet" *ngFor="let wallet of wallets" (click)="open_wallet( wallet._id )" [style.backgroundImage]="'url(' + api_url + wallet.background_image + ')'">
 				<span class="gradient"></span>
 				<div class="card_header"> 
 					<div class="left">

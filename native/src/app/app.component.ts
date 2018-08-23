@@ -4,6 +4,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+
 
 @Component({
     selector: 'app-root',
@@ -14,8 +16,9 @@ import { NavController } from '@ionic/angular';
 export class AppComponent {
     is_menu_display: Boolean = false;
     is_menu_active: string = 'dashboard';
+    is_side_menu_active: Boolean = false;
 
-    constructor( public navCtrl: NavController, private router: Router, private platform: Platform, private splashScreen: SplashScreen, private statusBar: StatusBar ) {
+    constructor( private storage: Storage, public navCtrl: NavController, private router: Router, private platform: Platform, private splashScreen: SplashScreen, private statusBar: StatusBar ) {
         this.initializeApp();
         this.menu_manager();
     }
@@ -40,5 +43,18 @@ export class AppComponent {
     click_menu( type ){
         this.navCtrl.goRoot('/' + type);
         this.is_menu_active = type;
+    }
+
+    logged_out(){
+        this.storage.remove('session')
+        this.storage.remove('wallet_id')
+        this.navCtrl.goRoot('/login');
+        this.is_side_menu_active = false;
+    }
+
+    change_wallet(){
+        this.storage.remove('wallet_id')
+        this.navCtrl.goRoot('/wallet');
+        this.is_side_menu_active = false;
     }
 }

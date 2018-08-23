@@ -19,10 +19,14 @@ section.history{
 				display: inline;
 				line-height: 32px;
 				margin-right: 10px;
-				font-size: 24px; 
+				font-size: 32px;
+				position: absolute;
+				cursor: pointer;
 			}
 			h1{
-				display: inline;
+				display: block;
+				text-align: center;
+				width: 100%;
 				color: #020433;
 				line-height: 32px;
 			}

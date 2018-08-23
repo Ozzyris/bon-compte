@@ -18,10 +18,14 @@ section.dashboard{
 				display: inline;
 				line-height: 32px;
 				margin-right: 10px;
-				font-size: 24px; 
+				font-size: 32px;
+				position: absolute;
+				cursor: pointer;
 			}
 			h1{
-				display: inline;
+				display: block;
+				text-align: center;
+				width: 100%;
 				color: #020433;
 				line-height: 32px;
 			}
@@ -142,9 +146,10 @@ section.dashboard{
 						display: flex;
 						justify-content: space-around;
 						align-items: center;
-						border-image: linear-gradient(to bottom left, #0F73EE, #C644FC);
-						border-image-slice: 1;
-						border-image-width: 2px;
+						border: 2px dashed #C644FC;
+						// border-image: linear-gradient(to bottom left, #0F73EE, #C644FC);
+						// border-image-slice: 1;
+						// border-image-width: 2px;
 						cursor: pointer;
 						margin-left: 6px;
 						float: left;

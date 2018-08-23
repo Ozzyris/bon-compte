@@ -107,9 +107,10 @@ section.wallet{
 				display: flex;
 				justify-content: space-around;
 				align-items: center;
-				border-image: linear-gradient(to bottom left, #0F73EE, #C644FC);
-				border-image-slice: 1;
-				border-image-width: 4px;
+				// border-image: linear-gradient(to bottom left, #0F73EE, #C644FC);
+				// border-image-slice: 1;
+				// border-image-width: 4px;
+				border: 4px dashed #C644FC;
 				cursor: pointer;
 			
 				h2{

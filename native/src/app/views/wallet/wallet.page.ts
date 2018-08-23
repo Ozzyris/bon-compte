@@ -23,11 +23,22 @@ export class WalletPage implements OnInit {
 	}
 
 	get_wallets(){
-		this.wallets = this.wallet_service.get_wallets();
+		this.wallet_service.get_wallets()
+			.subscribe( wallet_details => {
+				this.wallets = wallet_details;
+			}, error => {
+				console.log(error);
+				if(error.error[0].code == 'middleware_error') this.loggedout();
+			})
 	}
 
 	open_wallet( wallet_id ){
 		this.storage.set('wallet_id', wallet_id);
 		this.navCtrl.goRoot('/dashboard');
+	}
+	loggedout(){
+		this.storage.remove('session')
+		this.storage.remove('wallet_id')
+		this.navCtrl.goRoot('/login');
 	}
 }
