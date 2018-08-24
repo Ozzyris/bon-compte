@@ -18,14 +18,13 @@
 		</div>
 	</nav>
 
-	<a class="icon" *ngIf="is_menu_display"  (click)="is_side_menu_active = true"></a>
 	<nav class="left_button" *ngIf="is_menu_display" [ngClass]="{'active': is_side_menu_active}">
 		<div class="header">
 			<span class="icon" (click)="is_side_menu_active = false"></span>
 		</div>
 		<div class="user">
-			<div class="avatar" style="background-image: url('http://placehold.it/300x300')"></div>
-			<h2>Alexandre Nicol</h2>
+			<div class="avatar" [style.backgroundImage]="'url(' + api_url + user_details.avatar + ')'"></div>
+			<h2>{{user_details.first_name}} {{user_details.last_name}}</h2>
 		</div>
 		<div class="body">
 			<ul>
@@ -33,11 +32,11 @@
 					<span class="icon"></span>
 					<p>Profile</p>
 				</li>
-				<li (click)="change_wallet()">
+				<li (click)="common_service.update_wallet()">
 					<span class="icon"></span>
 					<p>Wallets</p>
 				</li>
-				<li (click)="logged_out()">
+				<li (click)="common_service.log_out()">
 					<span class="icon"></span>
 					<p>Logout</p>
 				</li>

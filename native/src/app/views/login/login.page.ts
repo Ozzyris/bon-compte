@@ -1,16 +1,22 @@
+//angular
 import { Component, OnInit } from '@angular/core';
+
+// ionic plugin
 import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { Events } from '@ionic/angular';
 
 //services
 import { auth_service } from '../../services/auth/auth.service';
 import { validator_service } from '../../services/validator/validator.service';
+import { common_service } from '../../services/common/common.service';
+
 
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.page.html',
 	styleUrls: ['./login.page.scss'],
-	providers: [auth_service, validator_service]
+	providers: [auth_service, validator_service, common_service]
 
 })
 
@@ -28,27 +34,14 @@ export class LoginPage implements OnInit {
 
 	//primary cta
 	button_text: string = 'Login';
-	constructor( private storage: Storage, public navCtrl: NavController, private validator_service: validator_service, private auth_service: auth_service ){
+	constructor( public events: Events, private storage: Storage, public navCtrl: NavController, private validator_service: validator_service, private auth_service: auth_service, private common_service: common_service ){
 		this.check_storage();
 	}
 	ngOnInit(){}
 
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			this.storage.get('wallet_id').then((val) => {
-				resolve( val );
-			});
-		})
-	}
-	get_session_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			this.storage.get('session').then((val) => {
-				resolve( val );
-			});
-		})
-	}
+
 	check_storage(){
-		Promise.all([this.get_session_from_storage(), this.get_wallet_id_from_storage()])
+		Promise.all([this.common_service.get_session_from_storage(), this.common_service.get_wallet_id_from_storage()])
 			.then( values => {
 				if(values[0] && values[1]){
 					this.navCtrl.goRoot('/dashboard');
@@ -90,10 +83,20 @@ export class LoginPage implements OnInit {
 		this.auth_service.signin( this.user_information )
 			.subscribe( user_details => {
 					if( user_details ){
+						console.log( user_details );
+						let user_info = {
+							first_name: 'Alexandre',
+							last_name: 'Nicol',
+							avatar: 'alex.jpg',
+							currency: 'AUD',
+							user_id: '5b715f404850523535366e42'
+						}
+
 						this.storage.set('session', user_details.session);
 						this.storage.set('currency', user_details.currency);
 						this.storage.set('user_id', user_details.user_id);
-						
+
+						this.events.publish('user_info', user_info);
 						this.navCtrl.goRoot('/wallet');
 					}else{
 						this.info_password = '<span class="icon""></span> An unexpeted error happen';

@@ -1,12 +1,16 @@
+//angular
 import { Component, OnInit } from '@angular/core';
+
+// ionic plugin
 import { Storage } from '@ionic/storage';
 import { NavController } from '@ionic/angular';
-
+import { Events } from '@ionic/angular';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
 import { validator_service } from '../../services/validator/validator.service';
 import { convertor_service } from '../../services/convertor/convertor.service';
+import { common_service } from '../../services/common/common.service';
 
 // constants
 const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
@@ -15,7 +19,7 @@ const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
 	selector: 'app-transaction',
 	templateUrl: './transaction.page.html',
 	styleUrls: ['./transaction.page.scss'],
-	providers: [wallet_service, validator_service, convertor_service]
+	providers: [wallet_service, validator_service, convertor_service, common_service]
 })
 export class TransactionPage implements OnInit {
 	//transaction information
@@ -39,30 +43,16 @@ export class TransactionPage implements OnInit {
 
 	button_text: String = 'Add entry';
 
-	constructor( public navCtrl: NavController, private storage: Storage, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
+	constructor( public events: Events, public navCtrl: NavController, private storage: Storage, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service, private common_service: common_service ){}
 	ngOnInit(){
 		this.get_user_currency();
 	}
 
 	get_user_currency(){
-		this.get_currency_from_storage()
+		this.common_service.get_currency_from_storage()
 			.then( currency => {
 				this.update_currency( currency );
 			})
-	}
-	get_currency_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			this.storage.get('currency').then((val) => {
-				resolve( val );
-			});
-		})
-	}
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			this.storage.get('wallet_id').then((val) => {
-				resolve( val );
-			});
-		})
 	}
 	update_currency( currency ){
 		this.currency.choosen = currency;
@@ -116,7 +106,7 @@ export class TransactionPage implements OnInit {
 	}
 
 	add_transaction(){
-		this.get_wallet_id_from_storage()
+		this.common_service.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				if( !wallet_id ){
 					this.navCtrl.goRoot('/wallet');
@@ -135,7 +125,7 @@ export class TransactionPage implements OnInit {
 								this.transaction.original_amount.amount = this.transaction.description = '';
 								this.button_text = 'Add entry';
 							}, error => {
-								if(error.error[0].code == 'middleware_error') this.loggedout();
+								if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 								this.info_note = '<span class="icon""></span> ' + error.error.message;
 								this.button_text = 'Add entry';
 							});
@@ -145,9 +135,7 @@ export class TransactionPage implements OnInit {
 	dismiss_input(){
 		this.transaction.amount = this.transaction.description = '';
 	}
-	loggedout(){
-		this.storage.remove('session')
-		this.storage.remove('wallet_id')
-		this.navCtrl.goRoot('/login');
+	toggle_side_menu(){
+		this.events.publish('side_menu');
 	}
 }

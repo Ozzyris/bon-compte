@@ -84,7 +84,7 @@ router.use(bodyParser.json());
 			})
 			.then(user_details => {
 				user.currency = user_details.currency;
-				res.status(200).json({ user_id: user.id, session: session.token, currency: user.currency });
+				res.status(200).json({ user_id: user.id, session: session.token, currency: user.currency, given_name: user.given_name, family_name: user.family_name, avatar: user.avatar});
 			})
 			.catch( error => {
 				res.status(401).json( error );
