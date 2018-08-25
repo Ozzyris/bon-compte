@@ -39,6 +39,7 @@ export class AppComponent {
         this.menu_manager();
         this.left_menu_action();
         this.get_user_detail();
+        this.get_user_detail_on_stanby();
     }
     menu_manager(){
         this.router.events.subscribe((event: Event) => {
@@ -53,11 +54,15 @@ export class AppComponent {
     }
 
     get_user_detail(){
-        this.common_service.get_user()
+        this.common_service.get_user_from_storage()
             .then( user_details => {
-                console.log(user_details);
                 this.user_details = user_details;
             })
+    }
+    get_user_detail_on_stanby(){
+        this.events.subscribe('user_update', ( user_details ) => {
+            this.user_details = user_details;
+        });
     }
 
     click_menu( type ){
@@ -66,16 +71,19 @@ export class AppComponent {
     }
 
     left_menu_action(){
+        
         this.events.subscribe('side_menu', ( status ) => {
             switch( status ){
                 case 'open':
-                     this.is_side_menu_active = true;
+                    this.is_side_menu_active = true;
                     break;
                 case 'close':
-                     this.is_side_menu_active = false;
+                    this.is_side_menu_active = false;
+                    break;
+                case 'toggle':
+                    this.is_side_menu_active = !this.is_side_menu_active;
                     break;
                 default:
-                    this.is_side_menu_active = !this.is_side_menu_active;
                     break;
             } 
         });

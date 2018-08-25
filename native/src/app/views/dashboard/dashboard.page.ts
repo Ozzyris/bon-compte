@@ -42,9 +42,9 @@ export class DashboardPage implements OnInit {
 	}
 
 	get_user_currency(){
-		this.common_service.get_currency_from_storage()
-			.then( currency => {
-				this.user_currency = this.get_conversion_type( currency );
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.user_currency = this.get_conversion_type( user_details.currency );
 			})
 	}
 	get_conversion_type( currency ){
@@ -98,6 +98,6 @@ export class DashboardPage implements OnInit {
 			})	
 	}
 	toggle_side_menu(){
-		this.events.publish('side_menu');
+		this.events.publish('side_menu', 'toggle');
 	}
 }

@@ -49,9 +49,9 @@ export class TransactionPage implements OnInit {
 	}
 
 	get_user_currency(){
-		this.common_service.get_currency_from_storage()
-			.then( currency => {
-				this.update_currency( currency );
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.update_currency( user_details.currency );
 			})
 	}
 	update_currency( currency ){
@@ -136,6 +136,6 @@ export class TransactionPage implements OnInit {
 		this.transaction.amount = this.transaction.description = '';
 	}
 	toggle_side_menu(){
-		this.events.publish('side_menu');
+		this.events.publish('side_menu', 'toggle');
 	}
 }

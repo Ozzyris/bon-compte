@@ -24,14 +24,14 @@
 		</div>
 		<div class="user">
 			<div class="avatar" [style.backgroundImage]="'url(' + api_url + user_details.avatar + ')'"></div>
-			<h2>{{user_details.first_name}} {{user_details.last_name}}</h2>
+			<h2>{{user_details.given_name}} {{user_details.family_name}}</h2>
 		</div>
 		<div class="body">
 			<ul>
-				<li>
+<!-- 				<li>
 					<span class="icon"></span>
 					<p>Profile</p>
-				</li>
+				</li> -->
 				<li (click)="common_service.update_wallet()">
 					<span class="icon"></span>
 					<p>Wallets</p>

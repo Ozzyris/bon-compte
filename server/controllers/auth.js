@@ -83,8 +83,7 @@ router.use(bodyParser.json());
 				return user_model.get_userdetail_from_id( user.id );
 			})
 			.then(user_details => {
-				user.currency = user_details.currency;
-				res.status(200).json({ user_id: user.id, session: session.token, currency: user.currency, given_name: user.given_name, family_name: user.family_name, avatar: user.avatar});
+				res.status(200).json({ user_id: user.id, session: session.token, currency: user_details.currency, given_name: user_details.given_name, family_name: user_details.family_name, avatar: user_details.avatar});
 			})
 			.catch( error => {
 				res.status(401).json( error );

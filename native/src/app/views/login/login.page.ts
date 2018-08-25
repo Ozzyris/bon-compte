@@ -83,20 +83,18 @@ export class LoginPage implements OnInit {
 		this.auth_service.signin( this.user_information )
 			.subscribe( user_details => {
 					if( user_details ){
-						console.log( user_details );
 						let user_info = {
-							first_name: 'Alexandre',
-							last_name: 'Nicol',
-							avatar: 'alex.jpg',
-							currency: 'AUD',
-							user_id: '5b715f404850523535366e42'
+							given_name: user_details.given_name,
+							family_name: user_details.family_name,
+							avatar: user_details.avatar,
+							currency: user_details.currency,
+							user_id: user_details.user_id
 						}
 
+						this.events.publish('user_update', user_info);
+						let user_stringify = JSON.stringify( user_info );
+						this.storage.set( 'user', user_stringify );
 						this.storage.set('session', user_details.session);
-						this.storage.set('currency', user_details.currency);
-						this.storage.set('user_id', user_details.user_id);
-
-						this.events.publish('user_info', user_info);
 						this.navCtrl.goRoot('/wallet');
 					}else{
 						this.info_password = '<span class="icon""></span> An unexpeted error happen';

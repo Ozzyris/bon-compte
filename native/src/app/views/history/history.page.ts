@@ -29,9 +29,8 @@ export class HistoryPage implements OnInit {
 
 	constructor( public events: Events, public navCtrl: NavController, private storage: Storage, private wallet_service: wallet_service, private common_service: common_service ){}
 	ngOnInit(){
-		this.get_user_id();
+		this.get_user_details();
 		this.get_all_transactions();
-		this.get_user_currency();
 	}
 
 	get_conversion_type( currency ){
@@ -49,16 +48,12 @@ export class HistoryPage implements OnInit {
 				return '';
 		}
 	}
-	get_user_id(){
-		this.common_service.get_user_id_from_storage()
-			.then( user_id => {
-				this.user_id = user_id;
-			})
-	}
-	get_user_currency(){
-		this.common_service.get_currency_from_storage()
-			.then( currency => {
-				this.user_currency = this.get_conversion_type( currency );
+	get_user_details(){
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.user_id = user_details.user_id;
+				this.user_currency = this.get_conversion_type( user_details.currency );
+
 			})
 	}
 	get_all_transactions(){
@@ -111,6 +106,6 @@ export class HistoryPage implements OnInit {
 			})	
 	}
 	toggle_side_menu(){
-		this.events.publish('side_menu');
+		this.events.publish('side_menu', 'toggle');
 	}
 }
