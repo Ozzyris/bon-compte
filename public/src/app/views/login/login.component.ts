@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 //services
 import { auth_service } from '../../services/auth/auth.service';
 import { validator_service } from '../../services/validator/validator.service';
+import { common_service } from '../../services/common/common.service';
 
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
-	providers: [auth_service, validator_service]
+	providers: [auth_service, common_service]
 
 })
 
@@ -28,24 +29,13 @@ export class LoginComponent implements OnInit {
 	//primary cta
 	button_text: string = 'Login';
 
-	constructor( private router: Router, private auth_service: auth_service, private validator_service: validator_service ){
+	constructor( private router: Router, private auth_service: auth_service, private validator_service: validator_service , private common_service: common_service ){
 		this.check_storage();
 	}
 	ngOnInit(){}
 
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
-	get_session_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('session') );
-		})
-	}
-
 	check_storage(){
-		Promise.all([this.get_session_from_storage(), this.get_wallet_id_from_storage()])
+		Promise.all([this.common_service.get_session_from_storage(), this.common_service.get_wallet_id_from_storage()])
 			.then( values => {
 				if(values[0] && values[1]){
 					this.router.navigate(['dashboard']);
@@ -85,9 +75,16 @@ export class LoginComponent implements OnInit {
 		this.auth_service.signin( this.user_information )
 			.subscribe( user_details => {
 					if( user_details ){
+						let user_info = {
+							given_name: user_details.given_name,
+							family_name: user_details.family_name,
+							avatar: user_details.avatar,
+							currency: user_details.currency,
+							user_id: user_details.user_id
+						}
+						let user_stringify = JSON.stringify( user_info );
+						localStorage.setItem("user", user_stringify);
 						localStorage.setItem("session", user_details.session);
-						localStorage.setItem("currency", user_details.currency);
-						localStorage.setItem("user_id", user_details.user_id);
 						this.router.navigate(['wallet']);
 					}
 				}, err => {
