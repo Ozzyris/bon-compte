@@ -1,0 +1,30 @@
+<section class="wallet">
+	<div class="inner_container">
+		<div class="header">
+			<h1>Wallet</h1>
+		</div>
+		<div class="body">
+ 			<div class="card_wallet" *ngFor="let wallet of wallets" (click)="open_wallet( wallet._id )" [style.backgroundImage]="'url( ./assets/images/' + wallet.background_image + ')'">
+				<span class="gradient"></span>
+				<div class="card_header"> 
+					<div class="left">
+						<h3>{{wallet.name}}</h3>
+						<p>last updated {{wallet.last_edit | amTimeAgo}}</p>
+					</div>
+					<div class="right">
+						<a class="icon"></a>
+					</div>
+				</div>
+				<div class="card_footer">
+					<ul>
+						<li class="user_avatar" *ngFor="let member_detail of wallet.member" [style.backgroundImage]="'url( ./assets/images/' + member_detail.avatar + ')'"></li>
+					</ul>
+					<p>You plus {{(wallet.member.length)-1}} others</p>
+				</div>
+			</div>
+			<div class="card_add">
+				<h2>Add a Wallet</h2>
+			</div>
+		</div>
+	</div>
+</section>

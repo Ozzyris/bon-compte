@@ -1,0 +1,28 @@
+<nav class="bottom_container" *ngIf="is_menu_display">
+  <div class="inner_container">
+    <ul>
+      <li routerLinkActive="active" routerLink="/dashboard">
+        <span class="icon"></span>
+        <p>Dashboard</p>
+      </li>
+      <li routerLinkActive="active" routerLink="/transaction">
+        <span class="icon"></span>
+        <p>Add Entry</p>
+      </li>
+      <li routerLinkActive="active" routerLink="/history">
+        <span class="icon"></span>
+        <p>History</p>
+      </li>
+    </ul>
+    <div class="submenu">
+      <div class="avatar" [style.backgroundImage]="'url( ./assets/images/' +  user_details.avatar + ')'"></div>
+      <div class="submenu_dropdown">
+        <ul>
+          <li (click)="common_service.update_wallet()" >Wallets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<router-outlet (activate)="scroll_top()"></router-outlet>

@@ -1,0 +1,80 @@
+import { Component, OnInit } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
+
+//services
+import { wallet_service } from '../../services/wallet/wallet.service';
+import { common_service } from '../../services/common/common.service';
+
+@Component({
+	selector: 'app-dashboard',
+	templateUrl: './dashboard.component.html',
+	styleUrls: ['./dashboard.component.scss'],
+	providers: [wallet_service, common_service]
+})
+
+export class DashboardComponent implements OnInit {
+	api_url: string = environment.api_url + 'uploads/';
+	dashboard_details: any = {
+		my_details: {
+			avatar: '',
+			balance: '',
+			family_name: '',
+			given_name: '',
+			spending: ''
+		},
+		partner_details: []
+	};
+	last_5_transactions: any;
+	user_currency: string;
+	money_sign: string;
+
+	constructor( private router: Router, private wallet_service: wallet_service, private common_service: common_service ){}
+	ngOnInit(){
+		this.get_last_5_transactions();
+		this.get_dashboard_details();
+		this.get_user_currency();
+	}
+
+	get_user_currency(){
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.user_currency = this.get_conversion_type( user_details.currency );
+			})
+	}
+
+	get_conversion_type( currency ){
+		switch( currency ){
+			case 'EUR':
+				this.money_sign = '€';
+				return 'usdToeur';
+			case 'AUD':
+				this.money_sign = '$';
+				return 'usdToaud';
+			case 'YEN':
+				this.money_sign = '¥';
+				return 'usdToyen';
+			default:
+				return '';
+		}
+	}
+	get_dashboard_details(){
+		let payload = {
+			wallet_id: ''
+		}
+
+		this.common_service.get_wallet_id_from_storage()
+			.then( wallet_id => {
+				payload.wallet_id = wallet_id;
+				if( !wallet_id ){
+					this.router.navigate(['wallet']);
+				}else{
+					this.dashboard_details = this.wallet_service.get_dashboard_details();
+				}
+				
+			})
+	}
+	get_last_5_transactions(){
+		this.last_5_transactions = this.wallet_service.get_last_5_transactions();
+	}
+}

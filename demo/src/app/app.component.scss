@@ -1,0 +1,219 @@
+// =============================================================================
+// IMPORT
+// =============================================================================
+@import "../assets/styles/ui_mixines";
+
+nav.bottom_container{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 75px;
+	background-color: white;
+	z-index: 100;
+	box-shadow: 0px 0px 5px rgba(black, .1);
+
+	div.inner_container{
+		@include container_sizing( 300px );
+
+		ul{
+			width: 100%;
+			overflow: auto;
+
+			li{
+				width: 33%;
+				float: left;
+				padding-top: 10px;
+				cursor: pointer;
+
+				span.icon{
+					font-family: 'font_awesome';
+					font-size: 24px;
+					color: $primary_blue_med;
+					text-align: center;
+					margin: 0 auto;
+					display: block;
+					padding: 4px 0;
+					transition: all 200ms;
+				}
+				p{
+					font-family: 'nixie_one';
+					font-size: 10px;
+					text-transform: uppercase;
+					color: $primary_blue_med;
+					text-align: center;
+					margin: 0 auto;
+					display: block;
+					padding: 4px 0;
+					transition: all 200ms;
+				}
+				&.active{
+					span.icon{
+						color: $secondary_yellow_med;
+					}
+					p{
+						color: $secondary_yellow_med;
+					}
+				}
+			}
+		}
+		div.submenu{
+			display: none;
+
+			div.avatar{}
+			div.submenu_dropdown{
+				ul{
+					li{}
+				}
+			}
+		}
+	}
+}
+
+/*
+    TABLET VERSION
+*/
+@media screen and (min-width: 768px ){
+	
+	nav.bottom_container{
+		position: relative;
+		width: 100%;
+		z-index: 0;
+		height: 50px;
+		box-shadow: 0px 0px 0px rgba(black, 0);
+	
+		div.inner_container{
+			@include container_sizing( 1000px );
+			overflow: auto;
+	
+			ul{
+				width: calc(100% - 150px);
+				float: left;
+	
+				li{
+					width: auto;
+					padding-top: 0;
+					margin: 0 10px;
+					float: none;
+					display: inline;
+	
+					&:first-child{ margin-left: 0; }
+					span.icon{
+						display: inline;
+						font-size: 16px;
+						margin: 0 5px 0 0;
+					}
+					p{
+
+						font-size: 16px;
+						color: $primary_blue_med;
+						text-align: left;
+						margin: 0;
+						display: inline;
+						padding: 0;
+						line-height: 50px;
+					}
+					&.active{
+						span.icon{}
+						p{
+							color: $secondary_yellow_med;
+							font-weight: 800;
+						}
+					}
+				}
+			}
+			div.submenu{
+				display: block;
+				float: right;
+				padding: 0 5px 5px 0;
+
+				&:hover div.submenu_dropdown{
+					display: block;
+				}
+
+				div.avatar{
+					width: 35px;
+					height: 35px;
+					background-size: cover;
+					background-position: center center;
+					border-radius: 50%;
+					margin-top: 6px;
+					border: 2px solid #f2f2f2;
+					cursor: pointer;
+				}
+				div.submenu_dropdown{
+					display: none;
+					background-color: #f2f2f2;
+					width: 100px;
+					border-radius: 3px;
+					box-shadow: 0px 0px 3px rgba(black, .2);
+					margin-top: 10px;
+					margin-left: -65px;
+					position: relative;		
+
+					ul{
+						width: 100%;
+						float: initial;
+
+						li{
+							display: block;
+							margin: 1px 0;
+							padding: 12px;
+							font-size: 12px;
+							width: calc( 100% - 24px);
+							transition: all 200ms;
+							background: #f2f2f2;
+							
+							&:first-child{
+								border-top-left-radius: 3px;
+								border-top-right-radius: 3px;
+								margin-top: 0px;
+
+								&:before{
+									content: '';
+									border-top: 0;
+									border-left: 8px solid transparent;
+									border-right: 8px solid transparent;
+									border-bottom: 8px solid #f2f2f2;
+									display: block;
+									position: absolute;
+									top: -8px;
+									right: 6px;
+								}
+
+								&:hover:before{
+									border-bottom: 8px solid #0F73EE;
+								}
+							}
+							&:last-child{
+								border-bottom-left-radius: 3px;
+								border-bottom-right-radius: 3px;
+								margin-bottom: 0;
+							}
+							&:hover{
+								background: linear-gradient(to bottom left, #0F73EE, #C644FC);
+								color: white;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+    SMALL SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 992px ){}
+
+/*
+    LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1200px ){}
+
+
+/*
+    SUPER LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1600px ){}

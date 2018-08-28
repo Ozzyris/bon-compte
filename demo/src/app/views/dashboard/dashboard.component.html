@@ -1,0 +1,59 @@
+<section class="dashboard">
+	<div class="inner_container">
+		<div class="header">
+			<a class="icon"></a>
+			<h1>Dashboard</h1>
+		</div>
+		<div class="body">
+			<div class="personnal_card">
+				<div class="card_header">
+					<span class="avatar_illustration" [style.backgroundImage]="'url( ./assets/images/' +  dashboard_details.my_details.avatar + ')'"></span>
+					<div class="naming">
+						<h4>{{dashboard_details.my_details.given_name}} {{dashboard_details.my_details.family_name}}</h4>
+						<p>last edit {{dashboard_details.my_details.last_edit | amTimeAgo}}</p>
+					</div>
+				</div>
+				<div class="card_body">
+					<h2>{{money_sign}} {{dashboard_details.my_details.balance | convertor:user_currency}}</h2>
+					<p class="spending">spending : {{money_sign}} {{dashboard_details.my_details.spending | convertor:user_currency}}</p>
+				</div>
+			</div>
+			<div class="partner_card_container">
+				<div class="partner_card_inner_container">
+					<div class="partner_card" *ngFor="let partner of dashboard_details.partner_details" >
+						<div class="card_header">
+							<h4>{{partner.given_name}} {{partner.family_name}}</h4>
+							<p>last edit {{partner.last_edit | amTimeAgo}}</p>
+						</div>
+						<div class="card_body">
+							<h2>{{money_sign}} {{partner.balance | convertor:user_currency}}</h2>
+							<p class="spending">spending : {{money_sign}} {{partner.spending | convertor:user_currency}}</p>
+						</div>
+					</div>
+					<div class="add_card">
+						<h2>Add partner</h2>
+					</div>
+				</div>
+			</div>
+			<div class="last_entries">
+				<div class="header">
+					<h3>Last entries</h3>
+				</div>
+				<div class="body">
+					<ul>
+						<li class="entry" *ngFor="let transaction of last_5_transactions">
+							<span class="avatar_illustration" [style.backgroundImage]="'url( ./assets/images/' +  transaction.author.avatar + ')'"></span>
+							<div class="content">
+								<p class="description">{{transaction.description}}</p>
+								<p class="small">{{transaction.creation_date | amTimeAgo}}</p>
+							</div>
+							<div class="price">
+								<p>{{money_sign}} {{transaction.amount | convertor:user_currency}}</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

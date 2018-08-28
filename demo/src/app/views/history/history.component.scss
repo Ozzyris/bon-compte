@@ -1,0 +1,207 @@
+// =============================================================================
+// IMPORT
+// =============================================================================
+@import "../../../assets/styles/ui_mixines";
+
+section.history{
+	div.inner_container{
+		position: relative;
+		padding-top: 5vh;
+		height: 95vh;
+		@include container_sizing( 400px );
+
+		div.header{
+			margin-bottom: 32px;
+
+			a.icon{
+				font-family: 'font_awesome';
+				color: #020433;
+				display: inline;
+				line-height: 32px;
+				margin-right: 10px;
+				font-size: 24px; 
+			}
+			h1{
+				display: inline;
+				color: #020433;
+				line-height: 32px;
+			}
+		}
+		div.body{
+			div.last_entries{
+				margin: 24px 0 100px 0;
+
+				div.body{
+					ul{
+						li.entry{
+							padding: 16px 24px;
+							overflow: auto;
+							background-color: white;
+							box-shadow: 0px 3px 3px rgba(#020433, .2);
+							cursor: pointer;
+							transition: all 200ms;
+
+							&:first-child{
+								border-top-left-radius: 4px;
+								border-top-right-radius: 4px;
+								padding-top: 24px;
+							}
+							&:last-child{
+								border-bottom-left-radius: 4px;
+								border-bottom-right-radius: 4px;
+								padding-bottom: 24px;
+							}
+							&.active{
+								margin: 20px -10px 20px -10px;
+								border-radius: 2px;
+								background: linear-gradient(to bottom left, #0F73EE, #C644FC);
+
+								div.content{
+									p.description{
+										color: white;
+										height: auto;
+										font-size: 16px;
+										// overflow: auto;
+										text-overflow: none;
+										white-space: normal;
+									}
+									p.small{
+										color: white;
+										margin-top: 5px;
+									}
+								}
+								div.price{
+									p{
+										font-size: 16px;
+										color: white;
+									}
+								}
+								div.footer{
+									display: block;
+								}
+							}
+							span.avatar_illustration{
+								float: left;
+								display: block;
+								width: 32px;
+								height: 32px;
+								background-size: cover;
+								background-position: center center;
+								border-radius: 50%;
+								border: 1.5px solid #f2f2f2;
+							}
+							div.content{
+								float: left;
+								margin-left: 5px;
+
+								p.description{
+									width: 180px;
+									line-height: 20px;
+									height: 20px;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									white-space: nowrap;
+									font-size: 14px;
+									font-family: 'nixie_one';
+									color: #020433;
+								}
+								p.small{
+									font-size: 13px;
+									font-family: 'nixie_one';
+									color: rgba(#020433, .5);
+								}
+							}
+							div.price{
+								float: right;
+								
+								p{
+									font-size: 14px;
+									font-family: 'nixie_one';
+									text-align: right;
+								}
+							}
+							div.footer{
+								display: none;
+								width: 100%;
+								overflow: auto;
+
+								a.button{
+									display: block;
+									float: right;
+									line-height: 24px;
+									font-family: 'nixie_one';
+									font-size: 12px;
+									color: #0F73EE;
+									background-color: white;
+									border-radius: 2px; 
+									padding: 0 12px;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+    TABLET VERSION
+*/
+@media screen and (min-width: 768px ){
+	section.history{
+		div.inner_container{
+			div.header{
+				a.icon{}
+				h1{}
+			}
+			div.body{
+				div.last_entries{
+					div.body{
+						ul{
+							li.entry{
+								&:first-child{}
+								&:last-child{}
+								&.active{
+									div.content{
+										p.description{}
+										p.small{}
+									}
+									div.price{
+										p{}
+									}
+								}
+								span.avatar_illustration{}
+								div.content{
+									p.description{
+										width: 200px;
+									}
+									p.small{}
+								}
+								div.price{
+									p{}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/*
+    SMALL SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 992px ){}
+
+/*
+    LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1200px ){}
+
+
+/*
+    SUPER LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1600px ){}
