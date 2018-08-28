@@ -15,11 +15,11 @@
       </li>
     </ul>
     <div class="submenu">
-      <div class="avatar" style="background-image: url('http://placehold.it/100x100');"></div>
+      <div class="avatar" [style.backgroundImage]="'url(' + api_url + user_details.avatar + ')'"></div>
       <div class="submenu_dropdown">
         <ul>
-          <li>Wallets</li>
-          <li>Logout</li>
+          <li (click)="common_service.update_wallet()" >Wallets</li>
+          <li (click)="common_service.log_out()" >Logout</li>
         </ul>
       </div>
     </div>

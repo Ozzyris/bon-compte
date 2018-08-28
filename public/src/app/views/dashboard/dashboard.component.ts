@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
+import { common_service } from '../../services/common/common.service';
 
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss'],
-	providers: [wallet_service]
+	providers: [wallet_service, common_service]
 })
 
 export class DashboardComponent implements OnInit {
@@ -28,30 +29,20 @@ export class DashboardComponent implements OnInit {
 	user_currency: string;
 	money_sign: string;
 
-	constructor( private router: Router, private wallet_service: wallet_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service, private common_service: common_service ){}
 	ngOnInit(){
 		this.get_last_5_transactions();
 		this.get_dashboard_details();
 		this.get_user_currency();
 	}
 
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
-	get_currency_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('currency') );
-		})
-	}
-
 	get_user_currency(){
-		this.get_currency_from_storage()
-			.then( currency => {
-				this.user_currency = this.get_conversion_type( currency );
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.user_currency = this.get_conversion_type( user_details.currency );
 			})
 	}
+
 	get_conversion_type( currency ){
 		switch( currency ){
 			case 'EUR':
@@ -72,10 +63,9 @@ export class DashboardComponent implements OnInit {
 			wallet_id: ''
 		}
 
-		this.get_wallet_id_from_storage()
+		this.common_service.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
-
 				if( !wallet_id ){
 					this.router.navigate(['wallet']);
 				}else{
@@ -85,27 +75,20 @@ export class DashboardComponent implements OnInit {
 							this.dashboard_details.partner_details = dashboard_details.partner_details;
 						}, error => {
 							console.log(error);
-							if(error.error[0].code == 'middleware_error') this.loggedout();
+							if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 						})
 				}
 				
 			})
-	}
-
-	loggedout(){
-		localStorage.removeItem('session');
-		localStorage.removeItem('wallet_id');
-		this.router.navigate(['login']);
 	}
 	get_last_5_transactions(){
 		let payload = {
 			wallet_id: ''
 		}
 
-		this.get_wallet_id_from_storage()
+		this.common_service.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
-
 				this.last_5_transactions = this.wallet_service.get_last_5_transactions( payload );
 			})	
 	}

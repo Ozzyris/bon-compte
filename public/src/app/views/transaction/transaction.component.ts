@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { wallet_service } from '../../services/wallet/wallet.service';
 import { validator_service } from '../../services/validator/validator.service';
 import { convertor_service } from '../../services/convertor/convertor.service';
+import { common_service } from '../../services/common/common.service';
 
 // constants
 const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
@@ -14,7 +15,7 @@ const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
 	selector: 'app-transaction',
 	templateUrl: './transaction.component.html',
 	styleUrls: ['./transaction.component.scss'],
-	providers: [wallet_service, validator_service, convertor_service]
+	providers: [wallet_service, validator_service, convertor_service, common_service]
 })
 
 export class TransactionComponent implements OnInit {
@@ -40,26 +41,15 @@ export class TransactionComponent implements OnInit {
 	button_text: String = 'Add entry';
 
 
-	constructor( private router: Router, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service, private common_service: common_service ){}
 	ngOnInit(){
 		this.get_user_currency();
 	}
 
-	get_currency_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('currency') );
-		})
-	}
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
-
 	get_user_currency(){
-		this.get_currency_from_storage()
-			.then( currency => {
-				this.update_currency( currency );
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.update_currency( user_details.currency );
 			})
 	}
 	update_currency( currency ){
@@ -114,7 +104,7 @@ export class TransactionComponent implements OnInit {
 	}
 
 	add_transaction(){
-		this.get_wallet_id_from_storage()
+		this.common_service.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				if( !wallet_id ){
 					this.router.navigate(['wallet']);
@@ -133,20 +123,13 @@ export class TransactionComponent implements OnInit {
 								this.transaction.original_amount.amount = this.transaction.description = '';
 								this.button_text = 'Add entry';
 							}, error => {
-								if(error.error[0].code == 'middleware_error') this.loggedout();
+								if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 								this.info_note = '<span class="icon""></span> ' + error.error.message;
 								this.button_text = 'Add entry';
 							});
 				}
 			})
 	}
-
-	loggedout(){
-		localStorage.removeItem('session');
-		localStorage.removeItem('wallet_id');
-		this.router.navigate(['login']);
-	}
-
 	dismiss_input(){
 		this.transaction.amount = this.transaction.description = '';
 	}

@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
+import { common_service } from '../../services/common/common.service';
 
 @Component({
 	selector: 'app-history',
 	templateUrl: './history.component.html',
 	styleUrls: ['./history.component.scss'],
-	providers: [wallet_service]
+	providers: [wallet_service, common_service]
 })
 
 export class HistoryComponent implements OnInit {
@@ -20,28 +21,12 @@ export class HistoryComponent implements OnInit {
 	money_sign: string;
 	selected_item: string;
 
-	constructor( private router: Router, private wallet_service: wallet_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service, private common_service: common_service ){}
 	ngOnInit(){
-		this.get_user_id();
 		this.get_all_transactions();
-		this.get_user_currency();
+		this.get_user_details();
 	}
 
-	get_user_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('user_id') );
-		})
-	}
-	get_wallet_id_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('wallet_id') );
-		})
-	}
-	get_currency_from_storage(): Promise<any>{
-		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('currency') );
-		})
-	}
 	get_conversion_type( currency ){
 		switch( currency ){
 			case 'EUR':
@@ -58,17 +43,11 @@ export class HistoryComponent implements OnInit {
 		}
 	}
 	
-	get_user_currency(){
-		this.get_currency_from_storage()
-			.then( currency => {
-				this.user_currency = this.get_conversion_type( currency );
-			})
-	}
-	
-	get_user_id(){
-		this.get_user_id_from_storage()
-			.then( user_id => {
-				this.user_id = user_id;
+	get_user_details(){
+		this.common_service.get_user_from_storage()
+			.then( user_details => {
+				this.user_id = user_details.user_id;
+				this.user_currency = this.get_conversion_type( user_details.currency );
 			})
 	}
 
@@ -77,7 +56,7 @@ export class HistoryComponent implements OnInit {
 			wallet_id: ''
 		}
 
-		this.get_wallet_id_from_storage()
+		this.common_service.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				payload.wallet_id = wallet_id;
 				
@@ -89,16 +68,10 @@ export class HistoryComponent implements OnInit {
 								this.all_transactions = all_transactions
 							}, error => {
 								console.log(error.error);
-								if(error.error[0].code == 'middleware_error') this.loggedout();
+								if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 							});
 				}
 			})	
-	}
-
-	loggedout(){
-		localStorage.removeItem('session');
-		localStorage.removeItem('wallet_id');
-		this.router.navigate(['login']);
 	}
 
 	activate_item( index ){
@@ -109,7 +82,7 @@ export class HistoryComponent implements OnInit {
 		}		
 	}
 	remove_entry( transaction_id ){
-		this.get_wallet_id_from_storage()
+		this.common_service.get_wallet_id_from_storage()
 			.then( wallet_id => {
 				let payload = {
 					wallet_id: wallet_id,
@@ -123,7 +96,7 @@ export class HistoryComponent implements OnInit {
 								this.get_all_transactions();
 							}, error => {
 								console.log(error.error);
-								if(error.error[0].code == 'middleware_error') this.loggedout();
+								if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 							});
 
 			})

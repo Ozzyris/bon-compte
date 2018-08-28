@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 	//primary cta
 	button_text: string = 'Login';
 
-	constructor( private router: Router, private auth_service: auth_service, private validator_service: validator_service , private common_service: common_service ){
+	constructor( private router: Router, private auth_service: auth_service, private validator_service: validator_service, private common_service: common_service ){
 		this.check_storage();
 	}
 	ngOnInit(){}

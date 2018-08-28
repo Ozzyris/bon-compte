@@ -21,7 +21,7 @@ export class common_service {
 	}
 	get_user_from_storage(): Promise<any>{
 		return new Promise((resolve, reject)=>{
-			resolve( localStorage.getItem('user') );
+			resolve( JSON.parse(localStorage.getItem('user')) );
 		})
 	}
 	// clear storage
