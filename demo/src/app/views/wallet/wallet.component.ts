@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 
 //services
 import { wallet_service } from '../../services/wallet/wallet.service';
@@ -13,7 +12,6 @@ import { wallet_service } from '../../services/wallet/wallet.service';
 })
 
 export class WalletComponent implements OnInit {
-	api_url: string = environment.api_url + 'uploads/';
 	wallets: any;
 
 	constructor( private router: Router, private wallet_service: wallet_service ){}

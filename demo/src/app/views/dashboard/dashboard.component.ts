@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 
 //services
@@ -14,7 +13,6 @@ import { common_service } from '../../services/common/common.service';
 })
 
 export class DashboardComponent implements OnInit {
-	api_url: string = environment.api_url + 'uploads/';
 	dashboard_details: any = {
 		my_details: {
 			avatar: '',

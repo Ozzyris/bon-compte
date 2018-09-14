@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { Router, Event, NavigationEnd } from '@angular/router';
-import { environment } from './../environments/environment';
-
 //services
 import { common_service } from './services/common/common.service';
 
@@ -13,7 +11,6 @@ import { common_service } from './services/common/common.service';
 })
 
 export class AppComponent {
-	api_url: string = environment.api_url + 'uploads/';
 	is_menu_display: Boolean = false;
 	user_details: any = {};
 
