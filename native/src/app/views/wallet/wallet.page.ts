@@ -28,7 +28,6 @@ export class WalletPage implements OnInit {
 			.subscribe( wallet_details => {
 				this.wallets = wallet_details;
 			}, error => {
-				console.log(error);
 				if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 			})
 	}

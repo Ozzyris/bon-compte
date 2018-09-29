@@ -1,0 +1,176 @@
+// =============================================================================
+// IMPORT
+// =============================================================================
+@import "../../../assets/styles/ui_mixines";
+
+
+div.notification_container{
+	position: fixed;
+	top: 10px;
+	right: 0;
+	left: 0;
+	z-index: 10000;
+	overflow: auto;
+
+	div.notification{
+		width: calc(100% - 44px);
+		background-color: white;
+		padding: 6px 12px;
+		box-shadow: 0px 0px 4px rgba(black, .2);
+		border-top: 4px solid darkgrey;
+		margin-bottom: 10px;
+		border-radius: 2px;
+		margin:10px;
+
+		&.error{
+			border-color: $classic_red;
+	
+			h4{
+				color: $classic_red;
+			}
+		}
+		&.warning{
+			border-color: $secondary_yellow_med;
+	
+			h4{
+				color: $secondary_yellow_med;
+			}
+		}
+		&.info{
+			border-color: $classic_blue;
+	
+			h4{
+				color: $classic_blue;
+			}
+		}
+		&.success{
+			border-color: $classic_green;
+	
+			h4{
+				color: $classic_green;
+			}
+		}
+
+		div.header{
+			overflow: auto;
+			margin: 10px 0;
+	
+			h4{
+				float: left;
+				font-family: 'nixie_one';
+				font-size: 16px;
+				width: calc(100% - 10px);
+				@include ellipsis();
+	
+				span.icon{
+					font-family: 'font_awesome';
+					font-size: 14px;
+					margin-right: 5px;
+				}
+			}
+			span.close.icon{
+				float: right;
+				font-family: 'font_awesome';
+				font-size: 16px;
+				cursor: pointer;
+			}
+		}
+		div.body{
+			margin: 10px 0;
+			p{
+				font-family: 'nixie_one';
+				font-size: 14px;
+			}
+		}
+	}
+}
+
+/*
+    TABLET VERSION
+*/
+@media screen and (min-width: 768px ){
+	div.notification_container{
+		top: 20px;
+		right: 20px;
+		z-index: 1;
+		max-height: calc(100vh - 20px);
+		overflow: auto;
+	
+		div.notification{
+			width: 200px;
+			background-color: white;
+			border-radius: 2px;
+			padding: 6px 12px;
+			box-shadow: 0px 0px 4px rgba(black, .05);
+			border-top: 4px solid darkgrey;
+			margin-bottom: 10px;
+	
+			&.error{
+				h4{}
+			}
+			&.warning{
+				h4{}
+			}
+			&.info{
+				h4{}
+			}
+			&.success{
+				h4{}
+			}
+	
+			div.header{
+				h4{
+					span.icon{}
+				}
+				span.close.icon{}
+			}
+			div.body{
+				p{}
+			}
+		}
+	}
+}
+
+/*
+    SMALL SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 992px ){
+	div.notification_container{
+		div.notification{
+			&.error{
+				h4{}
+			}
+			&.warning{
+				h4{}
+			}
+			&.info{
+				h4{}
+			}
+			&.success{
+				h4{}
+			}
+	
+			div.header{
+				h4{
+					span.icon{}
+				}
+				span.close.icon{}
+			}
+			div.body{
+				p{}
+			}
+			
+		}
+	}
+}
+
+/*
+    LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1200px ){}
+
+
+/*
+    SUPER LARGE SCREEN COMPUTER VERSION
+*/
+@media screen and (min-width: 1600px ){}

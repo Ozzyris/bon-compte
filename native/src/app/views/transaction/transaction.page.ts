@@ -121,13 +121,24 @@ export class TransactionPage implements OnInit {
 	
 					this.wallet_service.add_entry( this.transaction )
 						.subscribe( is_transaction_added => {
-								alert( is_transaction_added.message )
 								this.transaction.original_amount.amount = this.transaction.description = '';
 								this.button_text = 'Add entry';
+								let notification = {
+									status: 'success',
+									title: 'Transaction Added',
+									description: 'Your transaction has been successfully added.',
+								}
+								this.events.publish('notification_subscription', notification);
 							}, error => {
 								if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 								this.info_note = '<span class="icon""></span> ' + error.error.message;
 								this.button_text = 'Add entry';
+								let notification = {
+									status: 'error',
+									title: 'Transaction Failed',
+									description: 'Your transaction has failed. Please try again shortly.',
+								}
+								this.events.publish('notification_subscription', notification);
 							});
 				}
 			})

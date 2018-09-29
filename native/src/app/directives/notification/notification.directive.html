@@ -1,0 +1,11 @@
+<div class="notification_container">
+	<div class="notification" *ngFor="let notification of notifications" [ngClass]="notification.status" >
+		<div class="header">
+			<h4><span class="icon">{{notification.symbole}}</span>{{notification.title}}</h4>
+			<span class="close icon" (click)="remove_notification(notification.id)"></span>
+		</div>
+		<div class="body">
+			<p>{{notification.description}}</p>
+		</div>
+	</div>
+</div>

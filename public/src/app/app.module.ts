@@ -19,6 +19,7 @@ import { WalletComponent } from './views/wallet/wallet.component';
 //PIPES
 import { SanitizerPipe } from './pipes/sanitizer/sanitizer.pipe';
 import { ConvertorPipe } from './pipes/convertor/convertor.pipe';
+import { notification_directive } from './directives/notification/notification.directive';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, data: { title: 'Login' } },
@@ -38,7 +39,8 @@ const routes: Routes = [
     LoginComponent,
     WalletComponent,
     SanitizerPipe,
-    ConvertorPipe
+    ConvertorPipe,
+    notification_directive
   ],
   imports: [
     BrowserModule,

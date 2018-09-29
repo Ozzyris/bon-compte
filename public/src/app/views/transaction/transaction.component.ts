@@ -7,6 +7,7 @@ import { wallet_service } from '../../services/wallet/wallet.service';
 import { validator_service } from '../../services/validator/validator.service';
 import { convertor_service } from '../../services/convertor/convertor.service';
 import { common_service } from '../../services/common/common.service';
+import { notification_service } from '../../services/notification/notification.service';
 
 // constants
 const all_currency = ['USD', 'AUD', 'EUR', 'YEN'];
@@ -41,7 +42,7 @@ export class TransactionComponent implements OnInit {
 	button_text: String = 'Add entry';
 
 
-	constructor( private router: Router, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service, private common_service: common_service ){}
+	constructor( private router: Router, private wallet_service: wallet_service, private validator_service: validator_service, private convertor_service: convertor_service, private common_service: common_service, private notification_service: notification_service ){}
 	ngOnInit(){
 		this.get_user_currency();
 	}
@@ -119,18 +120,38 @@ export class TransactionComponent implements OnInit {
 	
 					this.wallet_service.add_entry( this.transaction )
 						.subscribe( is_transaction_added => {
-								alert( is_transaction_added.message )
 								this.transaction.original_amount.amount = this.transaction.description = '';
 								this.button_text = 'Add entry';
+
+								let notification = {
+									status: 'success',
+									title: 'Transaction Added',
+									description: 'Your transaction has been successfully added.',
+								}
+								this.notification_service.add_notification( notification );
 							}, error => {
 								if(error.error[0].code == 'middleware_error') this.common_service.log_out();
 								this.info_note = '<span class="icon""></span> ' + error.error.message;
 								this.button_text = 'Add entry';
+
+								let notification = {
+									status: 'error',
+									title: 'Transaction Failed',
+									description: 'Your transaction has failed. Please try again shortly.',
+								}
+								this.notification_service.add_notification( notification );
 							});
 				}
 			})
 	}
 	dismiss_input(){
-		this.transaction.amount = this.transaction.description = '';
+		let notification = {
+			status: 'error',
+			title: 'Transaction Failed',
+			description: 'Your transaction has failed. Please try again shortly.',
+		}
+		this.notification_service.add_notification( notification );				
+
+		// this.transaction.amount = this.transaction.description = '';
 	}
 }

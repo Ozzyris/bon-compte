@@ -95,3 +95,10 @@ $secondary_yellow_med: #FFBC00;
 	@media screen and (min-width: 992px ){}
 	&:hover{}
 }
+
+@mixin ellipsis(){
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
