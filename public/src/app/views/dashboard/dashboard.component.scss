@@ -164,7 +164,7 @@ section.dashboard{
 				border-radius: 4px;
 				box-shadow: 0px 3px 6px rgba(#020433, .2);
 				padding: 24px;
-				margin: 24px 0 100px 0;
+				margin: 24px 0 10px 0;
 
 				div.header{
 					h3{
@@ -223,6 +223,18 @@ section.dashboard{
 						}
 					}
 				}
+			}
+			a.button{
+				background: linear-gradient(to bottom left, #0F73EE, #C644FC);
+				color: white;
+				display: block;
+				width: 100%;
+				padding: 16px 0;
+				cursor: pointer;
+				border-radius: 4px;
+				text-align: center;
+				font-size: 16px;
+				margin: 24px 0 100px 0;
 			}
 		}
 	}
