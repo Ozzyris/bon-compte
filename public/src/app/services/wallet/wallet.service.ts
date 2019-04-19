@@ -14,19 +14,19 @@ export class wallet_service {
 	httpOptions: any;
 
 	constructor( private router: Router, private http: HttpClient ){
-    	this.get_session_from_storage()
-    		.then( session => {
-    			if( !session ){
+		this.get_session_from_storage()
+			.then( session => {
+				if( !session ){
 					this.router.navigate(['login']);
-    			}else{
-    				this.httpOptions = {
-    					headers: new HttpHeaders({
-    						'Content-Type':  'application/json',
-    						'X-Auth-Token': session
-    					})
-    				};
-    			}
-    		})
+				}else{
+					this.httpOptions = {
+						headers: new HttpHeaders({
+							'Content-Type':  'application/json',
+							'X-Auth-Token': session
+						})
+					};
+				}
+			})
 	}
 
 	get_session_from_storage(): Promise<any>{
